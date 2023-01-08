@@ -6,7 +6,6 @@ import * as core from "@actions/core";
 import * as tc from "@actions/tool-cache";
 
 import { getErrors, unwrap } from "./either";
-import { resolveReleaseTag } from "./github";
 import { getOctokit, Octokit } from "./octokit";
 import {
   parseCacheDirectory,
@@ -15,7 +14,10 @@ import {
   TargetBinary,
 } from "./parse";
 import { getTargetTriple } from "./platform";
-import { fetchReleaseAssetMetadataFromTag, fetchRepoTags } from "./fetch";
+import {
+  fetchReleaseAssetMetadataFromTag,
+  findExactSemanticVersionTag,
+} from "./fetch";
 import type { ExactSemanticVersion, RepositorySlug } from "./types";
 
 function getDestinationDirectory(
@@ -40,11 +42,13 @@ async function installGitHubReleaseBinary(
   cacheDirectory: string,
   token: string
 ): Promise<void> {
-  // NOTE: there's a foot-gun here cause by lack of pagination
-  const repoTags = await fetchRepoTags(octokit, targetBinary.slug);
-  const releaseTag = resolveReleaseTag(repoTags, targetBinary.tag);
   const targetTriple = getTargetTriple(arch(), platform());
 
+  const releaseTag = await findExactSemanticVersionTag(
+    octokit,
+    targetBinary.slug,
+    targetBinary.tag
+  );
   const releaseAsset = await fetchReleaseAssetMetadataFromTag(
     octokit,
     targetBinary.slug,
