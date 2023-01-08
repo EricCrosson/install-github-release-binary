@@ -1,3 +1,10 @@
+## [1.0.4](https://github.com/EricCrosson/install-github-release-binary/compare/v1.0.3...v1.0.4) (2023-01-08)
+
+
+### Bug Fixes
+
+* **docs:** add criteria for compatibility ([8e86a16](https://github.com/EricCrosson/install-github-release-binary/commit/8e86a1624bb125e9514791563d22089a08735e06))
+
 ## [1.0.3](https://github.com/EricCrosson/install-github-release-binary/compare/v1.0.2...v1.0.3) (2023-01-08)
 
 
