@@ -1,5 +1,9 @@
 # install-github-release-binary
 
+[![Build Status]](https://github.com/EricCrosson/install-github-release-binary/actions/workflows/release.yml)
+
+[build status]: https://github.com/EricCrosson/install-github-release-binary/actions/workflows/release.yml/badge.svg?event=push
+
 **install-github-release-binary** is an opinionated GitHub Action for adding a binary from a GitHub Release to your CI `$PATH`.
 
 The primary goals are, in order of priority:
