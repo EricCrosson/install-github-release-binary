@@ -1,3 +1,10 @@
+## [1.0.3](https://github.com/EricCrosson/install-github-release-binary/compare/v1.0.2...v1.0.3) (2023-01-08)
+
+
+### Bug Fixes
+
+* create directories recursively ([0800c87](https://github.com/EricCrosson/install-github-release-binary/commit/0800c8753e1b99cb148441090cb4c65fc73dbb7d))
+
 ## [1.0.2](https://github.com/EricCrosson/install-github-release-binary/compare/v1.0.1...v1.0.2) (2023-01-08)
 
 
