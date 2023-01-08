@@ -2,7 +2,7 @@
   "name": "install-github-release-binary",
   "version": "1.0.0",
   "private": true,
-  "description": "GitHub Action to install a binary from a GitHub Release ",
+  "description": "GitHub Action to install a binary from a GitHub Release",
   "main": "dist/src/index.js",
   "repository": {
     "type": "git",

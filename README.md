@@ -1,6 +1,6 @@
 # install-github-release-binary
 
-**install-github-release-binary** is an opinionated GitHub Action for adding a binary from a GitHub release to your CI `$PATH`.
+**install-github-release-binary** is an opinionated GitHub Action for adding a binary from a GitHub Release to your CI `$PATH`.
 
 The primary goals are, in order of priority:
 
