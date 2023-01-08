@@ -1,0 +1,26 @@
+{
+  "plugins": [
+    "@semantic-release/commit-analyzer",
+    "@semantic-release/release-notes-generator",
+    [
+      "@semantic-release/exec",
+      {
+        "prepareCmd": "npm run build"
+      }
+    ],
+    "@semantic-release/changelog",
+    [
+      "@semantic-release/git",
+      {
+        "assets": ["CHANGELOG.md", "dist/index.js"]
+      }
+    ],
+    [
+      "semantic-release-major-tag",
+      {
+        "customTags": ["v${major}", "v${major}.${minor}"]
+      }
+    ],
+    "@semantic-release/github"
+  ]
+}
