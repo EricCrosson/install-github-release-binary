@@ -91,7 +91,7 @@ async function main(): Promise<void> {
   );
 
   const errors = [maybeToken, maybeTargetBinary, maybeCacheDirectory].flatMap(
-    (parsedValue) => getErrors(parsedValue)
+    getErrors
   );
   if (errors.length > 0) {
     errors.forEach((error) => core.error(error));
