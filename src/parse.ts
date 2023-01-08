@@ -34,7 +34,7 @@ export function parseRepository(value: string): Either<TargetBinary> {
     return error(errors);
   }
 
-  const regex = /^(\S+)\/(\S+)@v(\S+)$/;
+  const regex = /^(\S+)\/(\S+)@(v\S+)$/;
   const match = value.match(regex);
   if (match === null || match.length !== 4) {
     return error([
