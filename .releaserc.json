@@ -5,6 +5,7 @@
     [
       "@semantic-release/exec",
       {
+        "verifyRelease": "npm run type-check",
         "prepareCmd": "npm run build"
       }
     ],

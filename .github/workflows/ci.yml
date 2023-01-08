@@ -39,7 +39,7 @@ jobs:
         run: npm ci --ignore-scripts
 
       - name: Type check
-        run: ./node_modules/.bin/tsc --noEmit
+        run: npm run type-check
 
       - name: Test
         run: npm test
