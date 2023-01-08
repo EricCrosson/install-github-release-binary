@@ -61,7 +61,7 @@ For example: `EricCrosson/flux-capacitor@v1`.
 
 #### token
 
-A GitHub token with at least `repo` scope.
+A GitHub token with `repo` scope.
 Defaults to the `${{ github.token }}` created automatically by GitHub Actions.
 
 To install a binary from a private GitHub repository, use a [Personal Access Token].
