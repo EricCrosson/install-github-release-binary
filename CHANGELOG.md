@@ -1,3 +1,10 @@
+## [1.2.3](https://github.com/EricCrosson/install-github-release-binary/compare/v1.2.2...v1.2.3) (2023-01-08)
+
+
+### Bug Fixes
+
+* use consistent capitalization in cache key ([62a2b22](https://github.com/EricCrosson/install-github-release-binary/commit/62a2b22066046be01c782e66ad4039d40a73bede))
+
 ## [1.2.2](https://github.com/EricCrosson/install-github-release-binary/compare/v1.2.1...v1.2.2) (2023-01-08)
 
 
