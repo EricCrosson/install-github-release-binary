@@ -41,6 +41,7 @@ async function installGitHubReleaseBinary(
   octokit: Octokit,
   targetBinary: TargetBinary,
   storageDirectory: string,
+  enableCache: boolean,
   token: string
 ): Promise<void> {
   const targetTriple = getTargetTriple(arch(), platform());
@@ -74,7 +75,10 @@ async function installGitHubReleaseBinary(
     releaseTag,
     targetTriple,
   ].join("-");
-  const restoreCache = await cache.restoreCache(cachePaths, cacheKey);
+
+  const restoreCache = enableCache
+    ? await cache.restoreCache(cachePaths, cacheKey)
+    : undefined;
 
   // If unable to restore from the cache, download the binary from GitHub
   if (restoreCache === undefined) {
@@ -93,7 +97,9 @@ async function installGitHubReleaseBinary(
       { accept: "application/octet-stream" }
     );
 
-    await cache.saveCache(cachePaths, cacheKey);
+    if (enableCache) {
+      await cache.saveCache(cachePaths, cacheKey);
+    }
   }
 
   // Permissions are an attribute of the filesystem, not the file.
@@ -120,6 +126,7 @@ async function main(): Promise<void> {
   const token = unwrap(maybeToken);
   const targetBinary = unwrap(maybeTargetBinary);
   const homeDirectory = unwrap(maybeHomeDirectory);
+  const enableCache = core.getInput("cache") === "true";
 
   const storageDirectory = path.join(
     homeDirectory,
@@ -132,6 +139,7 @@ async function main(): Promise<void> {
     octokit,
     targetBinary,
     storageDirectory,
+    enableCache,
     token
   );
 }
