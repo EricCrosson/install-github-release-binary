@@ -23,10 +23,10 @@ Use this action in a step:
 
 ## Inputs
 
-| Input Parameter | Required | Description                                                                            |
-| :-------------: | :------: | -------------------------------------------------------------------------------------- |
-|      repo       |   true   | Target repository slug and tag. [[Details](#repo)]                                     |
-|      token      |  false   | GitHub token for REST requests. Defaults to `${{ github.token }}`. [[Details](#token)] |
+| Input Parameter | Required | Description                                                                          |
+| :-------------: | :------: | ------------------------------------------------------------------------------------ |
+|      repo       |   true   | Target repository slug and tag. [Details](#repo)                                     |
+|      token      |  false   | GitHub token for REST requests. Defaults to `${{ github.token }}`. [Details](#token) |
 
 #### repo
 
