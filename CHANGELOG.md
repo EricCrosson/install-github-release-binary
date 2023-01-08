@@ -1,3 +1,10 @@
+# [1.1.0](https://github.com/EricCrosson/install-github-release-binary/compare/v1.0.4...v1.1.0) (2023-01-08)
+
+
+### Features
+
+* support pagination of tags ([f8c4ae7](https://github.com/EricCrosson/install-github-release-binary/commit/f8c4ae77def45c77051ce2d70609cec9c1591a73)), closes [#3](https://github.com/EricCrosson/install-github-release-binary/issues/3)
+
 ## [1.0.4](https://github.com/EricCrosson/install-github-release-binary/compare/v1.0.3...v1.0.4) (2023-01-08)
 
 
