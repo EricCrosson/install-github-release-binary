@@ -1,3 +1,10 @@
+## [1.2.5](https://github.com/EricCrosson/install-github-release-binary/compare/v1.2.4...v1.2.5) (2023-01-08)
+
+
+### Bug Fixes
+
+* disable caching by default ([f76c204](https://github.com/EricCrosson/install-github-release-binary/commit/f76c204763ddad3b496fd087f563cceacd05caf5))
+
 ## [1.2.4](https://github.com/EricCrosson/install-github-release-binary/compare/v1.2.3...v1.2.4) (2023-01-08)
 
 
