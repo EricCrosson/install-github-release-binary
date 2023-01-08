@@ -10,6 +10,18 @@ The primary goals are, in order of priority:
 
 ## Supported releases
 
+This action only supports installing from releases where the release:
+
+- is tagged with the full `{major}.{minor}.{patch}` semantic version
+- contains raw binary assets (archives not supported)
+- assets are labeled ending with the binary's [target triple]
+
+You can create compatible releases with [semantic-release], using a workflow like this [semantic-release Rust action].
+
+[semantic-release]: https://github.com/semantic-release/semantic-release
+[semantic-release rust action]: https://github.com/ericcrosson/rust-action
+[target triple]: https://doc.rust-lang.org/nightly/rustc/platform-support.html
+
 ## Use
 
 Use this action in a step:
