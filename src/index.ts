@@ -65,7 +65,7 @@ async function installGitHubReleaseBinary(
     destinationBasename
   );
 
-  fs.mkdirSync(destinationDirectory);
+  fs.mkdirSync(destinationDirectory, { recursive: true });
   await tc.downloadTool(
     releaseAsset.url,
     destinationFilename,
