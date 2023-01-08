@@ -1,3 +1,10 @@
+## [1.2.1](https://github.com/EricCrosson/install-github-release-binary/compare/v1.2.0...v1.2.1) (2023-01-08)
+
+
+### Bug Fixes
+
+* **debug:** print information to debug cache behavior ([0212203](https://github.com/EricCrosson/install-github-release-binary/commit/02122032576c1936369ecb639ee43f6a831530cc))
+
 # [1.2.0](https://github.com/EricCrosson/install-github-release-binary/compare/v1.1.0...v1.2.0) (2023-01-08)
 
 
