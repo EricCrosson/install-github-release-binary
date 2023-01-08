@@ -2,6 +2,9 @@
 name: Install GitHub Release binary
 description: Install a binary from a GitHub Release
 author: Eric Crosson
+branding:
+  icon: arrow-down
+  color: green
 
 inputs:
   repo:
