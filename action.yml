@@ -1,0 +1,16 @@
+---
+name: Install GitHub Release binary
+description: Install a binary from a GitHub Release
+author: Eric Crosson
+
+inputs:
+  repo:
+    description: Target GitHub repository
+    required: true
+  token:
+    description: GitHub access token or a Personal Access Token with 'repo' scope
+    default: ${{ github.token }}
+
+runs:
+  using: node16
+  main: dist/index.js

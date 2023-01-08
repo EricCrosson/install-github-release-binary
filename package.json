@@ -1,0 +1,34 @@
+{
+  "name": "install-github-release-binary",
+  "version": "1.0.0",
+  "private": true,
+  "description": "GitHub Action to install a binary from a GitHub Release ",
+  "main": "dist/src/index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/EricCrosson/install-github-release-binary.git"
+  },
+  "keywords": [],
+  "author": "Eric Crosson <eric.s.crosson@utexas.edu>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/EricCrosson/install-github-release-binary/issues"
+  },
+  "homepage": "https://github.com/EricCrosson/install-github-release-binary#readme",
+  "scripts": {
+    "build": "esbuild src/index.ts --bundle --minify --platform=node --target=node16 --outfile=dist/index.js",
+    "test": "node --loader tsx --test test/test-*.ts"
+  },
+  "dependencies": {
+    "@actions/core": "1.10.0",
+    "@actions/github": "5.1.1",
+    "@actions/tool-cache": "2.0.1",
+    "@octokit/plugin-throttling": "4.3.2"
+  },
+  "devDependencies": {
+    "@types/node": "18.11.18",
+    "esbuild": "0.16.15",
+    "tsx": "3.12.1",
+    "typescript": "4.9.4"
+  }
+}
