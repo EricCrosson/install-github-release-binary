@@ -76,6 +76,9 @@ async function installGitHubReleaseBinary(
   ].join("-");
   const restoreCache = await cache.restoreCache(cachePaths, cacheKey);
 
+  // DEBUG:
+  console.log({ restoreCache });
+
   // If unable to restore from the cache, download the binary from GitHub
   if (restoreCache === undefined) {
     const releaseAsset = await fetchReleaseAssetMetadataFromTag(
