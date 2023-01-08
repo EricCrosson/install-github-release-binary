@@ -2,13 +2,14 @@ import { arch, platform } from "node:os";
 import * as fs from "node:fs";
 import * as path from "node:path";
 
+import * as cache from "@actions/cache";
 import * as core from "@actions/core";
 import * as tc from "@actions/tool-cache";
 
 import { getErrors, unwrap } from "./either";
 import { getOctokit, Octokit } from "./octokit";
 import {
-  parseCacheDirectory,
+  parseEnvironmentVariable,
   parseRepository,
   parseToken,
   TargetBinary,
@@ -21,14 +22,14 @@ import {
 import type { ExactSemanticVersion, RepositorySlug } from "./types";
 
 function getDestinationDirectory(
-  cacheDirectory: string,
+  storageDirectory: string,
   slug: RepositorySlug,
   tag: ExactSemanticVersion,
   platform: NodeJS.Platform,
   architecture: string
 ): string {
   return path.join(
-    cacheDirectory,
+    storageDirectory,
     slug.owner,
     slug.repository,
     tag,
@@ -39,7 +40,7 @@ function getDestinationDirectory(
 async function installGitHubReleaseBinary(
   octokit: Octokit,
   targetBinary: TargetBinary,
-  cacheDirectory: string,
+  storageDirectory: string,
   token: string
 ): Promise<void> {
   const targetTriple = getTargetTriple(arch(), platform());
@@ -49,35 +50,55 @@ async function installGitHubReleaseBinary(
     targetBinary.slug,
     targetBinary.tag
   );
-  const releaseAsset = await fetchReleaseAssetMetadataFromTag(
-    octokit,
-    targetBinary.slug,
-    releaseTag,
-    targetTriple
-  );
 
   const destinationDirectory = getDestinationDirectory(
-    cacheDirectory,
+    storageDirectory,
     targetBinary.slug,
     releaseTag,
     platform(),
     arch()
   );
-  const destinationBasename = releaseAsset.name.replace(`-${targetTriple}`, "");
+  const destinationBasename = targetBinary.slug.repository;
   const destinationFilename = path.join(
     destinationDirectory,
     destinationBasename
   );
 
-  fs.mkdirSync(destinationDirectory, { recursive: true });
-  await tc.downloadTool(
-    releaseAsset.url,
-    destinationFilename,
-    `token ${token}`,
-    { accept: "application/octet-stream" }
-  );
-  fs.chmodSync(destinationFilename, "755");
+  // Try to restore from the cache.
+  // Resolve exact semantic version tags before caching,
+  // so upstream updates are always pulled in.
+  const cachePaths = [destinationFilename];
+  const cacheKey = [
+    targetBinary.slug.owner,
+    targetBinary.slug.repository,
+    releaseTag,
+    targetTriple,
+  ].join("-");
+  const restoreCache = await cache.restoreCache(cachePaths, cacheKey);
 
+  // If unable to restore from the cache, download the binary from GitHub
+  if (restoreCache === undefined) {
+    const releaseAsset = await fetchReleaseAssetMetadataFromTag(
+      octokit,
+      targetBinary.slug,
+      releaseTag,
+      targetTriple
+    );
+
+    fs.mkdirSync(destinationDirectory, { recursive: true });
+    await tc.downloadTool(
+      releaseAsset.url,
+      destinationFilename,
+      `token ${token}`,
+      { accept: "application/octet-stream" }
+    );
+
+    await cache.saveCache(cachePaths, cacheKey);
+  }
+
+  // Permissions are an attribute of the filesystem, not the file.
+  // Set the executable permission on the binary no matter where it came from.
+  fs.chmodSync(destinationFilename, "755");
   core.addPath(destinationDirectory);
 }
 
@@ -86,11 +107,9 @@ async function main(): Promise<void> {
     process.env["GITHUB_TOKEN"] || core.getInput("token")
   );
   const maybeTargetBinary = parseRepository(core.getInput("repo"));
-  const maybeCacheDirectory = parseCacheDirectory(
-    process.env["RUNNER_TOOL_CACHE"]
-  );
+  const maybeHomeDirectory = parseEnvironmentVariable("HOME");
 
-  const errors = [maybeToken, maybeTargetBinary, maybeCacheDirectory].flatMap(
+  const errors = [maybeToken, maybeTargetBinary, maybeHomeDirectory].flatMap(
     getErrors
   );
   if (errors.length > 0) {
@@ -100,13 +119,19 @@ async function main(): Promise<void> {
 
   const token = unwrap(maybeToken);
   const targetBinary = unwrap(maybeTargetBinary);
-  const cacheDirectory = unwrap(maybeCacheDirectory);
+  const homeDirectory = unwrap(maybeHomeDirectory);
+
+  const storageDirectory = path.join(
+    homeDirectory,
+    ".install-github-release-binary",
+    "bin"
+  );
   const octokit = getOctokit(token);
 
   await installGitHubReleaseBinary(
     octokit,
     targetBinary,
-    cacheDirectory,
+    storageDirectory,
     token
   );
 }
