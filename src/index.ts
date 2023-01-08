@@ -93,24 +93,7 @@ async function installGitHubReleaseBinary(
       { accept: "application/octet-stream" }
     );
 
-    // Tolerate cache errors.
-    // Possibly related to https://github.com/actions/toolkit/issues/658
-    try {
-      await cache.saveCache(cachePaths, cacheKey);
-    } catch (error) {
-      // NOTE: this is an unlawful cast
-      const typedError = error as Error;
-      switch (typedError.name) {
-        case cache.ValidationError.name:
-          throw error;
-        case cache.ReserveCacheError.name:
-          core.info(typedError.message);
-          break;
-        default:
-          core.warning(typedError.message);
-          break;
-      }
-    }
+    await cache.saveCache(cachePaths, cacheKey);
   }
 
   // Permissions are an attribute of the filesystem, not the file.
