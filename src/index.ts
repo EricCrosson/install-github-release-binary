@@ -76,9 +76,6 @@ async function installGitHubReleaseBinary(
   ].join("-");
   const restoreCache = await cache.restoreCache(cachePaths, cacheKey);
 
-  // DEBUG:
-  core.warning(`Restore cache: ${restoreCache}`);
-
   // If unable to restore from the cache, download the binary from GitHub
   if (restoreCache === undefined) {
     const releaseAsset = await fetchReleaseAssetMetadataFromTag(
@@ -96,7 +93,24 @@ async function installGitHubReleaseBinary(
       { accept: "application/octet-stream" }
     );
 
-    await cache.saveCache(cachePaths, cacheKey);
+    // Tolerate cache errors.
+    // Possibly related to https://github.com/actions/toolkit/issues/658
+    try {
+      await cache.saveCache(cachePaths, cacheKey);
+    } catch (error) {
+      // NOTE: this is an unlawful cast
+      const typedError = error as Error;
+      switch (typedError.name) {
+        case cache.ValidationError.name:
+          throw error;
+        case cache.ReserveCacheError.name:
+          core.info(typedError.message);
+          break;
+        default:
+          core.warning(typedError.message);
+          break;
+      }
+    }
   }
 
   // Permissions are an attribute of the filesystem, not the file.
