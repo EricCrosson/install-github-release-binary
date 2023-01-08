@@ -1,3 +1,10 @@
+## [1.2.4](https://github.com/EricCrosson/install-github-release-binary/compare/v1.2.3...v1.2.4) (2023-01-08)
+
+
+### Bug Fixes
+
+* tolerate cache errors ([30a42c0](https://github.com/EricCrosson/install-github-release-binary/commit/30a42c0c64ca99f0583a49159a66c18fe15a3d0e))
+
 ## [1.2.3](https://github.com/EricCrosson/install-github-release-binary/compare/v1.2.2...v1.2.3) (2023-01-08)
 
 
