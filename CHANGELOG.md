@@ -1,3 +1,10 @@
+# [1.2.0](https://github.com/EricCrosson/install-github-release-binary/compare/v1.1.0...v1.2.0) (2023-01-08)
+
+
+### Features
+
+* cache downloaded binaries ([7bdcb92](https://github.com/EricCrosson/install-github-release-binary/commit/7bdcb92e80668c11a31ae59b439f8b6b886517a0)), closes [#4](https://github.com/EricCrosson/install-github-release-binary/issues/4)
+
 # [1.1.0](https://github.com/EricCrosson/install-github-release-binary/compare/v1.0.4...v1.1.0) (2023-01-08)
 
 
