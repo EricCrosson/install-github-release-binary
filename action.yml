@@ -5,7 +5,7 @@ author: Eric Crosson
 
 inputs:
   repo:
-    description: Target GitHub repository
+    description: Target GitHub repository slug and tag
     required: true
   token:
     description: GitHub access token or a Personal Access Token with 'repo' scope
