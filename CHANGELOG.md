@@ -1,3 +1,10 @@
+## [1.2.2](https://github.com/EricCrosson/install-github-release-binary/compare/v1.2.1...v1.2.2) (2023-01-08)
+
+
+### Bug Fixes
+
+* **debug:** debug harder ([e0acc8c](https://github.com/EricCrosson/install-github-release-binary/commit/e0acc8c8e769454c3ce71e6c834cd65ae88305a0))
+
 ## [1.2.1](https://github.com/EricCrosson/install-github-release-binary/compare/v1.2.0...v1.2.1) (2023-01-08)
 
 
