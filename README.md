@@ -64,6 +64,6 @@ For example: `EricCrosson/flux-capacitor@v1`.
 A GitHub token with at least `repo` scope.
 Defaults to the `${{ github.token }}` created automatically by GitHub Actions.
 
-T install a binary from a private GitHub repository, use a [Personal Access Token].
+To install a binary from a private GitHub repository, use a [Personal Access Token].
 
 [personal access token]: https://docs.github.com/en/enterprise-server@3.4/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token
