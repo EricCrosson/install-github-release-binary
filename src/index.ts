@@ -77,7 +77,7 @@ async function installGitHubReleaseBinary(
   const restoreCache = await cache.restoreCache(cachePaths, cacheKey);
 
   // DEBUG:
-  console.log({ restoreCache });
+  core.warning(`Restore cache: ${restoreCache}`);
 
   // If unable to restore from the cache, download the binary from GitHub
   if (restoreCache === undefined) {
