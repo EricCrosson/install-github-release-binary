@@ -30,8 +30,8 @@ function getDestinationDirectory(
 ): string {
   return path.join(
     storageDirectory,
-    slug.owner,
-    slug.repository,
+    slug.owner.toLowerCase(),
+    slug.repository.toLowerCase(),
     tag,
     `${platform}-${architecture}`
   );
@@ -69,8 +69,8 @@ async function installGitHubReleaseBinary(
   // so upstream updates are always pulled in.
   const cachePaths = [destinationFilename];
   const cacheKey = [
-    targetBinary.slug.owner,
-    targetBinary.slug.repository,
+    targetBinary.slug.owner.toLowerCase(),
+    targetBinary.slug.repository.toLowerCase(),
     releaseTag,
     targetTriple,
   ].join("-");
