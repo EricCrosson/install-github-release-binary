@@ -7,8 +7,8 @@ branding:
   color: green
 
 inputs:
-  repo:
-    description: Target GitHub repository slug and tag
+  targets:
+    description: Whitespace separated list of target GitHub Releases in format {owner}/{repository}@{tag}
     required: true
   token:
     description: GitHub access token or a Personal Access Token with 'repo' scope

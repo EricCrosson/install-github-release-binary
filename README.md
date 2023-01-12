@@ -35,17 +35,28 @@ Use this action in a step:
 - name: Install flux-capacitor
   uses: EricCrosson/install-github-release-binary@v1
   with:
-    repo: EricCrosson/flux-capacitor@v1
+    targets: EricCrosson/flux-capacitor@v1
+```
+
+Install multiple binaries:
+
+```yaml
+- name: Install flux-capacitor
+  uses: EricCrosson/install-github-release-binary@v1
+  with:
+    targets: |
+      EricCrosson/flux-capacitor@v1
+      EricCrosson/steam-locomotive@v7.5.3
 ```
 
 ## Inputs
 
-| Input Parameter | Required | Description                                                                          |
-| :-------------: | :------: | ------------------------------------------------------------------------------------ |
-|      repo       |   true   | Target repository slug and tag. [Details](#repo)                                     |
-|      token      |  false   | GitHub token for REST requests. Defaults to `${{ github.token }}`. [Details](#token) |
+| Input Parameter | Required | Description                                                                                                     |
+| :-------------: | :------: | --------------------------------------------------------------------------------------------------------------- |
+|     targets     |   true   | Whitespace separated list of target GitHub Releases in format `{owner}/{repository}@{tag}`. [Details](#targets) |
+|      token      |  false   | GitHub token for REST requests. Defaults to `${{ github.token }}`. [Details](#token)                            |
 
-#### repo
+#### targets
 
 Target repository slug and tag.
 

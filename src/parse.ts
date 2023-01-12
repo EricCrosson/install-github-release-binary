@@ -1,5 +1,20 @@
-import { Either, error, ok } from "./either";
+import { Either, error, isOk, ok } from "./either";
 import type { RepositorySlug, SemanticVersion } from "./types";
+
+export function parseEnvironmentVariable(envVarName: string): Either<string> {
+  const value = process.env[envVarName];
+  if (value === undefined) {
+    return error([
+      `Expected environment variable '${envVarName}' to be defined`,
+    ]);
+  }
+  if (value.length === 0) {
+    return error([
+      `Expected environment variable '${envVarName}' to be non-empty`,
+    ]);
+  }
+  return ok(value);
+}
 
 export function parseToken(value: string): Either<string> {
   if (value.length === 0) {
@@ -13,10 +28,7 @@ export type TargetRelease = {
   tag: SemanticVersion;
 };
 
-export function parseTargetRelease(value: string): Either<TargetRelease> {
-  if (value.length === 0) {
-    return error(["input.repo not defined"]);
-  }
+function parseTargetRelease(value: string): Either<TargetRelease> {
   const errors: string[] = [];
   const repo_regex = /^(\S+)\/(\S+)$/;
   if (repo_regex.test(value) === null) {
@@ -54,17 +66,29 @@ export function parseTargetRelease(value: string): Either<TargetRelease> {
   return ok(target);
 }
 
-export function parseEnvironmentVariable(envVarName: string): Either<string> {
-  const value = process.env[envVarName];
-  if (value === undefined) {
-    return error([
-      `Expected environment variable '${envVarName}' to be defined`,
-    ]);
-  }
+export function parseTargetReleases(value: string): Either<TargetRelease[]> {
   if (value.length === 0) {
-    return error([
-      `Expected environment variable '${envVarName}' to be non-empty`,
-    ]);
+    return error(["input.targets not defined"]);
   }
-  return ok(value);
+  const tokens = value.trim().split(/\s+/);
+
+  const results: TargetRelease[] = [];
+  const errors: string[] = [];
+
+  for (const token of tokens) {
+    const release = parseTargetRelease(token);
+    if (isOk(release)) {
+      results.push(release.value);
+    } else {
+      const errorMessage =
+        `Encountered errors parsing target ${token}:` +
+        release.errors.map((error) => `\n  - ${error}`).join("\n");
+      errors.push(errorMessage);
+    }
+  }
+
+  if (errors.length > 0) {
+    return error(errors);
+  }
+  return ok(results);
 }
