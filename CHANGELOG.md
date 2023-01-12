@@ -1,3 +1,13 @@
+# [2.0.0](https://github.com/EricCrosson/install-github-release-binary/compare/v1.2.5...v2.0.0) (2023-01-12)
+
+
+* feat!: support installing multiple binaries ([d28998a](https://github.com/EricCrosson/install-github-release-binary/commit/d28998aa67f85084cbdef24a0d3889cb659d8dee))
+
+
+### BREAKING CHANGES
+
+* rename `repo` to `targets`
+
 ## [1.2.5](https://github.com/EricCrosson/install-github-release-binary/compare/v1.2.4...v1.2.5) (2023-01-08)
 
 
