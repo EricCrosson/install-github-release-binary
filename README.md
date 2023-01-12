@@ -33,7 +33,7 @@ Use this action in a step:
 
 ```yaml
 - name: Install flux-capacitor
-  uses: EricCrosson/install-github-release-binary@v1
+  uses: EricCrosson/install-github-release-binary@v2
   with:
     targets: EricCrosson/flux-capacitor@v1
 ```
@@ -42,7 +42,7 @@ Install multiple binaries:
 
 ```yaml
 - name: Install flux-capacitor
-  uses: EricCrosson/install-github-release-binary@v1
+  uses: EricCrosson/install-github-release-binary@v2
   with:
     targets: |
       EricCrosson/flux-capacitor@v1
