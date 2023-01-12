@@ -10,9 +10,9 @@ import { getErrors, unwrap } from "./either";
 import { getOctokit, Octokit } from "./octokit";
 import {
   parseEnvironmentVariable,
-  parseRepository,
+  parseTargetRelease,
   parseToken,
-  TargetBinary,
+  TargetRelease,
 } from "./parse";
 import { getTargetTriple } from "./platform";
 import {
@@ -39,7 +39,7 @@ function getDestinationDirectory(
 
 async function installGitHubReleaseBinary(
   octokit: Octokit,
-  targetBinary: TargetBinary,
+  targetRelease: TargetRelease,
   storageDirectory: string,
   enableCache: boolean,
   token: string
@@ -48,18 +48,18 @@ async function installGitHubReleaseBinary(
 
   const releaseTag = await findExactSemanticVersionTag(
     octokit,
-    targetBinary.slug,
-    targetBinary.tag
+    targetRelease.slug,
+    targetRelease.tag
   );
 
   const destinationDirectory = getDestinationDirectory(
     storageDirectory,
-    targetBinary.slug,
+    targetRelease.slug,
     releaseTag,
     platform(),
     arch()
   );
-  const destinationBasename = targetBinary.slug.repository;
+  const destinationBasename = targetRelease.slug.repository;
   const destinationFilename = path.join(
     destinationDirectory,
     destinationBasename
@@ -70,8 +70,8 @@ async function installGitHubReleaseBinary(
   // so upstream updates are always pulled in.
   const cachePaths = [destinationFilename];
   const cacheKey = [
-    targetBinary.slug.owner.toLowerCase(),
-    targetBinary.slug.repository.toLowerCase(),
+    targetRelease.slug.owner.toLowerCase(),
+    targetRelease.slug.repository.toLowerCase(),
     releaseTag,
     targetTriple,
   ].join("-");
@@ -84,7 +84,7 @@ async function installGitHubReleaseBinary(
   if (restoreCache === undefined) {
     const releaseAsset = await fetchReleaseAssetMetadataFromTag(
       octokit,
-      targetBinary.slug,
+      targetRelease.slug,
       releaseTag,
       targetTriple
     );
@@ -112,10 +112,10 @@ async function main(): Promise<void> {
   const maybeToken = parseToken(
     process.env["GITHUB_TOKEN"] || core.getInput("token")
   );
-  const maybeTargetBinary = parseRepository(core.getInput("repo"));
+  const maybeTargetRelease = parseTargetRelease(core.getInput("repo"));
   const maybeHomeDirectory = parseEnvironmentVariable("HOME");
 
-  const errors = [maybeToken, maybeTargetBinary, maybeHomeDirectory].flatMap(
+  const errors = [maybeToken, maybeTargetRelease, maybeHomeDirectory].flatMap(
     getErrors
   );
   if (errors.length > 0) {
@@ -124,7 +124,7 @@ async function main(): Promise<void> {
   }
 
   const token = unwrap(maybeToken);
-  const targetBinary = unwrap(maybeTargetBinary);
+  const targetRelease = unwrap(maybeTargetRelease);
   const homeDirectory = unwrap(maybeHomeDirectory);
   const enableCache = core.getInput("cache") === "true";
 
@@ -137,7 +137,7 @@ async function main(): Promise<void> {
 
   await installGitHubReleaseBinary(
     octokit,
-    targetBinary,
+    targetRelease,
     storageDirectory,
     enableCache,
     token

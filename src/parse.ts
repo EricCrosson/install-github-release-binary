@@ -8,12 +8,12 @@ export function parseToken(value: string): Either<string> {
   return ok(value);
 }
 
-export type TargetBinary = {
+export type TargetRelease = {
   slug: RepositorySlug;
   tag: SemanticVersion;
 };
 
-export function parseRepository(value: string): Either<TargetBinary> {
+export function parseTargetRelease(value: string): Either<TargetRelease> {
   if (value.length === 0) {
     return error(["input.repo not defined"]);
   }
@@ -42,7 +42,7 @@ export function parseRepository(value: string): Either<TargetBinary> {
     ]);
   }
 
-  const target: TargetBinary = {
+  const target: TargetRelease = {
     slug: {
       owner: match[1] as string,
       repository: match[2] as string,
