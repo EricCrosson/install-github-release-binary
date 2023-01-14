@@ -1,3 +1,10 @@
+## [2.0.1](https://github.com/EricCrosson/install-github-release-binary/compare/v2.0.0...v2.0.1) (2023-01-14)
+
+
+### Bug Fixes
+
+* **deps:** migrate to semantic-release-action/github-actions ([3e0f3f4](https://github.com/EricCrosson/install-github-release-binary/commit/3e0f3f41376e626f5f114272f670d894a01d84e5))
+
 # [2.0.0](https://github.com/EricCrosson/install-github-release-binary/compare/v1.2.5...v2.0.0) (2023-01-12)
 
 
