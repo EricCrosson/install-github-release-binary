@@ -21,10 +21,10 @@ This action only supports installing from releases where the release:
 - assets are labeled ending with the binary's [target triple]
 - the binary name is the repository name
 
-You can create compatible releases with [semantic-release], using a workflow like this [semantic-release Rust action].
+You can create compatible releases with [semantic-release], using a workflow like [semantic-release-action/rust].
 
 [semantic-release]: https://github.com/semantic-release/semantic-release
-[semantic-release rust action]: https://github.com/ericcrosson/rust-action
+[semantic-release-action/rust]: https://github.com/semantic-release-action/rust
 [target triple]: https://doc.rust-lang.org/nightly/rustc/platform-support.html
 
 ## Use
