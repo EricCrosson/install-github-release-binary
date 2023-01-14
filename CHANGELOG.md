@@ -1,3 +1,11 @@
+## [2.0.2](https://github.com/EricCrosson/install-github-release-binary/compare/v2.0.1...v2.0.2) (2023-01-14)
+
+
+### Bug Fixes
+
+* **ci:** invoke reusable workflow correctly ([f894b7e](https://github.com/EricCrosson/install-github-release-binary/commit/f894b7ee2292c4cd3afb629f0c7787783e006b9e))
+* **ci:** update semantic-release-action/github-actions to v4 ([ccde7ad](https://github.com/EricCrosson/install-github-release-binary/commit/ccde7ad34577315ea0a9bec20deb3e317c52b694))
+
 ## [2.0.1](https://github.com/EricCrosson/install-github-release-binary/compare/v2.0.0...v2.0.1) (2023-01-14)
 
 
