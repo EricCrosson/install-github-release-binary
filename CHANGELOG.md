@@ -1,3 +1,10 @@
+## [2.0.3](https://github.com/EricCrosson/install-github-release-binary/compare/v2.0.2...v2.0.3) (2023-01-21)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @octokit/plugin-throttling to v5 ([695d207](https://github.com/EricCrosson/install-github-release-binary/commit/695d2078c04760f75152d1d278e5a4c2f60cd9d1))
+
 ## [2.0.2](https://github.com/EricCrosson/install-github-release-binary/compare/v2.0.1...v2.0.2) (2023-01-14)
 
 
