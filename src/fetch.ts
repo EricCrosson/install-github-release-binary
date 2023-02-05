@@ -1,5 +1,5 @@
 import type { Octokit } from "./octokit";
-import { isEqual, none, Option, some } from "./option";
+import { isEqual, isSome, none, Option, some } from "./option";
 
 import {
   isExactSemanticVersion,
@@ -14,7 +14,8 @@ type Commit = {
   sha: Sha;
 };
 
-type Tag = {
+// This type is only exported for testing.
+export type Tag = {
   name: SemanticVersion;
   commit: Commit;
 };
@@ -30,6 +31,56 @@ function containsExactTag(
   return tags.find(isExactSemanticVersion);
 }
 
+// This function is only exported for testing.
+export function exactSemanticVersionTagReducer(givenTag: SemanticVersion) {
+  const versionsBySha: Record<Sha, SemanticVersion[]> = {};
+  let givenTagSha: Option<Sha> = none();
+
+  // Conditions for an exact match are -- we know both the:
+  //
+  // - sha that the given tag points to
+  // - exact version tag matching that sha
+  //
+  // These can be found in either order.
+  return function reducer(tag: Tag): Option<ExactSemanticVersion> {
+    const sha = tag.commit.sha;
+    const version = tag.name;
+
+    // If we found the sha the given tag points to
+    if (version === givenTag) {
+      givenTagSha = some(sha);
+      // check if we already knew the exact version tag matching that sha
+      const maybeExactTag = containsExactTag(versionsBySha[sha]);
+      if (maybeExactTag !== undefined) {
+        return some(maybeExactTag);
+      }
+    }
+
+    // If we're not looking at the given tag, and we're not looking
+    // at an exact version, this data is of no use to us.
+    if (!isExactSemanticVersion(version)) {
+      return none();
+    }
+
+    // It is possible that we know the sha for the given tag,
+    // we're just looking for exact version tag matching that sha.
+    if (isEqual(givenTagSha, sha)) {
+      return some(version);
+    }
+
+    // Otherwise, record this map of sha -> exact version tag
+    // so we can find it when we know the sha of the given tag.
+    const associatedVersions = versionsBySha[sha];
+    if (associatedVersions === undefined) {
+      versionsBySha[sha] = [version];
+    } else {
+      associatedVersions.push(version);
+    }
+
+    return none();
+  };
+}
+
 // Find the exact semantic version tag that this tag maps to.
 //
 // We need an exact tag because that's the only accepted input
@@ -43,15 +94,7 @@ export async function findExactSemanticVersionTag(
     return givenTag;
   }
 
-  const versionsBySha: Record<Sha, SemanticVersion[]> = {};
-  let givenTagSha: Option<Sha> = none();
-
-  // Conditions to stop looping are -- we know both the:
-  //
-  // - sha that the given tag points to
-  // - exact version tag matching that sha
-  //
-  // These can be found in either order.
+  const reducer = exactSemanticVersionTagReducer(givenTag);
 
   for await (const response of octokit.paginate.iterator(
     octokit.rest.repos.listTags,
@@ -63,38 +106,9 @@ export async function findExactSemanticVersionTag(
   )) {
     // NOTE: we are not parsing here, so this is an unlawful type cast
     for (const tag of response.data as unknown as TagsResponse) {
-      const sha = tag.commit.sha;
-      const version = tag.name;
-
-      // If we found the sha the given tag points to
-      if (version === givenTag) {
-        givenTagSha = some(sha);
-        // check if we already knew the exact version tag matching that sha
-        const maybeExactTag = containsExactTag(versionsBySha[sha]);
-        if (maybeExactTag !== undefined) {
-          return maybeExactTag;
-        }
-      }
-
-      // If we're not looking at the given tag, and we're not looking
-      // at an exact version, this data is of no use to us.
-      if (!isExactSemanticVersion(version)) {
-        continue;
-      }
-
-      // It is possible that we know the sha for the given tag,
-      // we're just looking for exact version tag matching that sha.
-      if (isEqual(givenTagSha, sha)) {
-        return version;
-      }
-
-      // Otherwise, record this map of sha -> exact version tag
-      // so we can find it when we know the sha of the given tag.
-      const associatedVersions = versionsBySha[sha];
-      if (associatedVersions === undefined) {
-        versionsBySha[sha] = [version];
-      } else {
-        associatedVersions.push(version);
+      const maybeExactTag = reducer(tag);
+      if (isSome(maybeExactTag)) {
+        return maybeExactTag.value;
       }
     }
   }

@@ -12,7 +12,8 @@ export type ExactSemanticVersion = string & { readonly __tag: unique symbol };
 export function isExactSemanticVersion(
   value: string
 ): value is ExactSemanticVersion {
-  const regex = /^v\d+\.\d+\.\d+$/;
+  const regex =
+    /^v(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-((?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\+([0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?$/;
   return regex.test(value);
 }
 

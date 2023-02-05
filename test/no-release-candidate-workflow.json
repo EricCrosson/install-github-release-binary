@@ -1,0 +1,52 @@
+[
+  {
+    "name": "v1.0.8",
+    "zipball_url": "https://api.github.com/repos/EricCrosson/configure-semantic-release-manifest/zipball/refs/tags/v1.0.8",
+    "tarball_url": "https://api.github.com/repos/EricCrosson/configure-semantic-release-manifest/tarball/refs/tags/v1.0.8",
+    "commit": {
+      "sha": "aaebf5c572b64d17710f936905c1b35e1f58acc8",
+      "url": "https://api.github.com/repos/EricCrosson/configure-semantic-release-manifest/commits/aaebf5c572b64d17710f936905c1b35e1f58acc8"
+    },
+    "node_id": "REF_kwDOIweDT7ByZWZzL3RhZ3MvdjEuMC44"
+  },
+  {
+    "name": "v1.0.7",
+    "zipball_url": "https://api.github.com/repos/EricCrosson/configure-semantic-release-manifest/zipball/refs/tags/v1.0.7",
+    "tarball_url": "https://api.github.com/repos/EricCrosson/configure-semantic-release-manifest/tarball/refs/tags/v1.0.7",
+    "commit": {
+      "sha": "7382f9a3ce14be1fd8b3656d262fc2c720c8f51c",
+      "url": "https://api.github.com/repos/EricCrosson/configure-semantic-release-manifest/commits/7382f9a3ce14be1fd8b3656d262fc2c720c8f51c"
+    },
+    "node_id": "REF_kwDOIweDT7ByZWZzL3RhZ3MvdjEuMC43"
+  },
+  {
+    "name": "v1.0.0",
+    "zipball_url": "https://api.github.com/repos/EricCrosson/configure-semantic-release-manifest/zipball/refs/tags/v1.0.0",
+    "tarball_url": "https://api.github.com/repos/EricCrosson/configure-semantic-release-manifest/tarball/refs/tags/v1.0.0",
+    "commit": {
+      "sha": "1e2a9b5bdb6012c863e6cb4b5b69897e0bb2cb43",
+      "url": "https://api.github.com/repos/EricCrosson/configure-semantic-release-manifest/commits/1e2a9b5bdb6012c863e6cb4b5b69897e0bb2cb43"
+    },
+    "node_id": "REF_kwDOIweDT7ByZWZzL3RhZ3MvdjEuMC4w"
+  },
+  {
+    "name": "v1.0",
+    "zipball_url": "https://api.github.com/repos/EricCrosson/configure-semantic-release-manifest/zipball/refs/tags/v1.0",
+    "tarball_url": "https://api.github.com/repos/EricCrosson/configure-semantic-release-manifest/tarball/refs/tags/v1.0",
+    "commit": {
+      "sha": "aaebf5c572b64d17710f936905c1b35e1f58acc8",
+      "url": "https://api.github.com/repos/EricCrosson/configure-semantic-release-manifest/commits/aaebf5c572b64d17710f936905c1b35e1f58acc8"
+    },
+    "node_id": "REF_kwDOIweDT65yZWZzL3RhZ3MvdjEuMA"
+  },
+  {
+    "name": "v1",
+    "zipball_url": "https://api.github.com/repos/EricCrosson/configure-semantic-release-manifest/zipball/refs/tags/v1",
+    "tarball_url": "https://api.github.com/repos/EricCrosson/configure-semantic-release-manifest/tarball/refs/tags/v1",
+    "commit": {
+      "sha": "aaebf5c572b64d17710f936905c1b35e1f58acc8",
+      "url": "https://api.github.com/repos/EricCrosson/configure-semantic-release-manifest/commits/aaebf5c572b64d17710f936905c1b35e1f58acc8"
+    },
+    "node_id": "REF_kwDOIweDT6xyZWZzL3RhZ3MvdjE"
+  }
+]
