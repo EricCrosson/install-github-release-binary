@@ -58,10 +58,8 @@ Install multiple binaries:
 
 #### targets
 
-Target repository slug and tag.
-
-Repository slugs are of the format `{owner}/{repository}`.
-For example: `EricCrosson/flux-capacitor`.
+Target repository slug and tag: `{owner}/{repository}@v{semantic-version}`.
+Example: `EricCrosson/flux-capacitor@v1`.
 
 Tags are of the format `v{semantic-version}`, where `{semantic-version}` is a [semantic version number].
 Examples:
@@ -69,9 +67,6 @@ Examples:
 - `v1`
 - `v1.2`
 - `v1.2.3`
-
-All together, the expected format is `{owner}/{repository}@v{semantic-version}`.
-For example: `EricCrosson/flux-capacitor@v1`.
 
 [semantic version number]: https://semver.org/
 
