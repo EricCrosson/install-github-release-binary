@@ -100,7 +100,7 @@ export async function findExactSemanticVersionTag(
   }
 
   throw new Error(
-    `Expected to find an exact semantic version tag matching ${givenTag}`
+    `Expected to find an exact semantic version tag matching ${givenTag} for ${slug.owner}/${slug.repository}`
   );
 }
 
@@ -125,7 +125,7 @@ export async function fetchReleaseAssetMetadataFromTag(
   );
   if (asset === undefined) {
     throw new Error(
-      `Expected to find asset in release ${tag} with label ${targetTriple}`
+      `Expected to find asset in release ${slug.owner}/${slug.repository}@${tag} with label ${targetTriple}`
     );
   }
   return {
