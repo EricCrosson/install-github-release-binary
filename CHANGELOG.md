@@ -1,3 +1,11 @@
+## [2.0.4](https://github.com/EricCrosson/install-github-release-binary/compare/v2.0.3...v2.0.4) (2023-02-05)
+
+
+### Bug Fixes
+
+* add target name to error messages ([17f43a7](https://github.com/EricCrosson/install-github-release-binary/commit/17f43a70889983e1935ce0b01192e0f0463fd88d)), closes [#23](https://github.com/EricCrosson/install-github-release-binary/issues/23)
+* use official regular expression to detect semantic versions ([a277d43](https://github.com/EricCrosson/install-github-release-binary/commit/a277d430dae9b0429beca6c229c7454671fe07b5)), closes [#22](https://github.com/EricCrosson/install-github-release-binary/issues/22)
+
 ## [2.0.3](https://github.com/EricCrosson/install-github-release-binary/compare/v2.0.2...v2.0.3) (2023-01-21)
 
 
