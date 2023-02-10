@@ -1,3 +1,10 @@
+# [2.1.0](https://github.com/EricCrosson/install-github-release-binary/compare/v2.0.4...v2.1.0) (2023-02-10)
+
+
+### Features
+
+* support pinning target by sha1 hash ([e9c3331](https://github.com/EricCrosson/install-github-release-binary/commit/e9c333130ebad0fe7b5ca58162c7444a51b91731)), closes [#26](https://github.com/EricCrosson/install-github-release-binary/issues/26)
+
 ## [2.0.4](https://github.com/EricCrosson/install-github-release-binary/compare/v2.0.3...v2.0.4) (2023-02-05)
 
 
