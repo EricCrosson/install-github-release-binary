@@ -12,14 +12,17 @@ import {
   parseEnvironmentVariable,
   parseTargetReleases,
   parseToken,
-  TargetRelease,
 } from "./parse";
 import { getTargetTriple } from "./platform";
 import {
   fetchReleaseAssetMetadataFromTag,
   findExactSemanticVersionTag,
 } from "./fetch";
-import type { ExactSemanticVersion, RepositorySlug } from "./types";
+import type {
+  ExactSemanticVersion,
+  RepositorySlug,
+  TargetRelease,
+} from "./types";
 
 function getDestinationDirectory(
   storageDirectory: string,

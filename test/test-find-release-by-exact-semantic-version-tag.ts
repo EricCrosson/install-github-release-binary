@@ -14,10 +14,8 @@ function check(
   expectedOutput: Option<ExactSemanticVersion>
 ) {
   const reducer = semanticVersionTagReducer(givenTag);
-  // Take the first 'some'
   const actualOutput = testData.reduce<Option<ExactSemanticVersion>>(
-    (previousResult, tag) =>
-      isNone(previousResult) ? reducer(tag) : previousResult,
+    (_previousResult, tag) => reducer(tag),
     none()
   );
 

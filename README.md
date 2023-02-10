@@ -47,26 +47,33 @@ Install multiple binaries:
     targets: |
       EricCrosson/flux-capacitor@v1
       EricCrosson/steam-locomotive@v7.5.3
+      EricCrosson/hoverboard@7382f9a3ce14be1fd8b3656d262fc2c720c8f51c
 ```
 
 ## Inputs
 
-| Input Parameter | Required | Description                                                                                                     |
-| :-------------: | :------: | --------------------------------------------------------------------------------------------------------------- |
-|     targets     |   true   | Whitespace separated list of target GitHub Releases in format `{owner}/{repository}@{tag}`. [Details](#targets) |
-|      token      |  false   | GitHub token for REST requests. Defaults to `${{ github.token }}`. [Details](#token)                            |
+| Input Parameter | Required | Description                                                                                                         |
+| :-------------: | :------: | ------------------------------------------------------------------------------------------------------------------- |
+|     targets     |   true   | Whitespace separated list of target GitHub Releases in format `{owner}/{repository}@{version}`. [Details](#targets) |
+|      token      |  false   | GitHub token for REST requests. Defaults to `${{ github.token }}`. [Details](#token)                                |
 
 #### targets
 
-Target repository slug and tag: `{owner}/{repository}@v{semantic-version}`.
-Example: `EricCrosson/flux-capacitor@v1`.
+Specify a whitespace-separated list of targets.
 
-Tags are of the format `v{semantic-version}`, where `{semantic-version}` is a [semantic version number].
+Each target is specified by repo slug and a [semantic version number] or sha1 hash.
+
+Accepted formats:
+
+- `{owner}/{repository}@v{semantic-version}`
+- `{owner}/{repository}@{sha1-hash}`
+
 Examples:
 
-- `v1`
-- `v1.2`
-- `v1.2.3`
+- `EricCrosson/flux-capacitor@v1`
+- `EricCrosson/flux-capacitor@v1.2`
+- `EricCrosson/flux-capacitor@v1.2.3`
+- `EricCrosson/flux-capacitor@aaebf5c572b64d17710f936905c1b35e1f58acc8`
 
 [semantic version number]: https://semver.org/
 

@@ -1,9 +1,9 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 
-import { parseTargetReleases, TargetRelease } from "../src/parse";
+import { parseTargetReleases } from "../src/parse";
 import { Either, error, isErr, isOk, ok } from "../src/either";
-import type { SemanticVersion } from "../src/types";
+import type { SemanticVersion, TargetRelease } from "../src/types";
 
 function err<A>(): Either<A> {
   return error([""]);
@@ -117,6 +117,22 @@ test(
           repository: "baz",
         },
         tag: "v2.3.4" as SemanticVersion,
+      },
+    ])
+  )
+);
+
+test(
+  "should parse a slug and exact sha",
+  check(
+    "foo/bar@2ba4cb142d0d5f6db85707fe55623b46c48cd6ac",
+    ok([
+      {
+        slug: {
+          owner: "foo",
+          repository: "bar",
+        },
+        tag: "2ba4cb142d0d5f6db85707fe55623b46c48cd6ac" as SemanticVersion,
       },
     ])
   )
