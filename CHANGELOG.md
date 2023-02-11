@@ -1,3 +1,10 @@
+## [2.1.1](https://github.com/EricCrosson/install-github-release-binary/compare/v2.1.0...v2.1.1) (2023-02-11)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @actions/cache to v3.1.3 ([f649d0b](https://github.com/EricCrosson/install-github-release-binary/commit/f649d0bce913e6757da4a030c30b551157113627))
+
 # [2.1.0](https://github.com/EricCrosson/install-github-release-binary/compare/v2.0.4...v2.1.0) (2023-02-10)
 
 
