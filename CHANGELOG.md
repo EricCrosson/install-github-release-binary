@@ -1,3 +1,10 @@
+## [2.1.2](https://github.com/EricCrosson/install-github-release-binary/compare/v2.1.1...v2.1.2) (2023-02-13)
+
+
+### Bug Fixes
+
+* remove support for specifying targets based on sha ([cf8bf37](https://github.com/EricCrosson/install-github-release-binary/commit/cf8bf371d914d0df89dfaaa0b881c8753027b6f6)), closes [#26](https://github.com/EricCrosson/install-github-release-binary/issues/26)
+
 ## [2.1.1](https://github.com/EricCrosson/install-github-release-binary/compare/v2.1.0...v2.1.1) (2023-02-11)
 
 
