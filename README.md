@@ -68,7 +68,6 @@ Examples:
 - `EricCrosson/flux-capacitor@v1`
 - `EricCrosson/flux-capacitor@v1.2`
 - `EricCrosson/flux-capacitor@v1.2.3`
-- `EricCrosson/flux-capacitor@aaebf5c572b64d17710f936905c1b35e1f58acc8`
 
 [semantic version number]: https://semver.org/
 
