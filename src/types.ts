@@ -23,11 +23,6 @@ export function isExactSemanticVersion(
 
 export type Sha1Hash = string & { readonly __tag: unique symbol };
 
-export function isSha1Hash(value: string): value is Sha1Hash {
-  const regex = /^[0-9a-f]{40}$/;
-  return regex.test(value);
-}
-
 export type RepositorySlug = {
   owner: string;
   repository: string;
@@ -37,5 +32,5 @@ export type TargetTriple = string & { readonly __tag: unique symbol };
 
 export type TargetRelease = {
   slug: RepositorySlug;
-  tag: SemanticVersion | Sha1Hash;
+  tag: SemanticVersion;
 };

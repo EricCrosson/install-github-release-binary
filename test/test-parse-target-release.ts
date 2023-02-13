@@ -121,19 +121,3 @@ test(
     ])
   )
 );
-
-test(
-  "should parse a slug and exact sha",
-  check(
-    "foo/bar@2ba4cb142d0d5f6db85707fe55623b46c48cd6ac",
-    ok([
-      {
-        slug: {
-          owner: "foo",
-          repository: "bar",
-        },
-        tag: "2ba4cb142d0d5f6db85707fe55623b46c48cd6ac" as SemanticVersion,
-      },
-    ])
-  )
-);

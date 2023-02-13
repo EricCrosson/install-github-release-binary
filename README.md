@@ -61,12 +61,7 @@ Install multiple binaries:
 
 Specify a whitespace-separated list of targets.
 
-Each target is specified by repo slug and a [semantic version number] or sha1 hash.
-
-Accepted formats:
-
-- `{owner}/{repository}@v{semantic-version}`
-- `{owner}/{repository}@{sha1-hash}`
+Each target is specified by repo slug and a [semantic version number] using the format `{owner}/{repository}@v{semantic-version}`.
 
 Examples:
 

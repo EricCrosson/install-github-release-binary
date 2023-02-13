@@ -1,5 +1,5 @@
 import { Either, error, isOk, ok } from "./either";
-import type { SemanticVersion, Sha1Hash, TargetRelease } from "./types";
+import type { SemanticVersion, TargetRelease } from "./types";
 
 const regexes = {
   owner: /\S+/,
@@ -8,7 +8,6 @@ const regexes = {
   majorMinorSemanticVersion: /v(0|[1-9]\d*)\.(0|[1-9]\d*)/,
   exactSemanticVersion:
     /v(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-((?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\+([0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?/,
-  sha1Hash: /[0-9a-f]{40}/,
 };
 
 export function parseEnvironmentVariable(envVarName: string): Either<string> {
@@ -40,10 +39,9 @@ function parseTargetReleaseVersion(value: string): Either<TargetRelease> {
     majorSemanticVersion,
     majorMinorSemanticVersion,
     exactSemanticVersion,
-    sha1Hash,
   } = regexes;
   const regex = new RegExp(
-    `^(${owner.source})/(${repository.source})@((${sha1Hash.source})|${majorSemanticVersion.source}|${majorMinorSemanticVersion.source}|${exactSemanticVersion.source})$`
+    `^(${owner.source})/(${repository.source})@(${majorSemanticVersion.source}|${majorMinorSemanticVersion.source}|${exactSemanticVersion.source})$`
   );
   const match = value.match(regex);
   if (match === null) {
@@ -55,7 +53,7 @@ function parseTargetReleaseVersion(value: string): Either<TargetRelease> {
       owner: match[1] as string,
       repository: match[2] as string,
     },
-    tag: match[3] as SemanticVersion | Sha1Hash,
+    tag: match[3] as SemanticVersion,
   };
   return ok(target);
 }

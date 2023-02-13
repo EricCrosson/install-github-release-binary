@@ -8,7 +8,6 @@ import {
   SemanticVersion,
   Sha1Hash,
   TargetTriple,
-  isSha1Hash,
 } from "./types";
 
 type Commit = {
@@ -22,19 +21,6 @@ export type Tag = {
 };
 
 export type TagsResponse = ReadonlyArray<Tag>;
-
-// This function is only exported for testing.
-export function sha1HashReducer(
-  givenSha: Sha1Hash
-): (tag: Tag) => Option<ExactSemanticVersion> {
-  return function reducer(tag: Tag): Option<ExactSemanticVersion> {
-    const version = tag.name;
-    if (tag.commit.sha === givenSha && isExactSemanticVersion(version)) {
-      return some(version);
-    }
-    return none();
-  };
-}
 
 function containsExactTag(
   tags: readonly SemanticVersion[] | undefined
@@ -104,15 +90,13 @@ export function semanticVersionTagReducer(
 export async function findExactSemanticVersionTag(
   octokit: Octokit,
   slug: RepositorySlug,
-  target: SemanticVersion | Sha1Hash
+  target: SemanticVersion
 ): Promise<ExactSemanticVersion> {
   if (isExactSemanticVersion(target)) {
     return target;
   }
 
-  const reducer = isSha1Hash(target)
-    ? sha1HashReducer(target)
-    : semanticVersionTagReducer(target);
+  const reducer = semanticVersionTagReducer(target);
 
   for await (const response of octokit.paginate.iterator(
     octokit.rest.repos.listTags,
@@ -131,12 +115,8 @@ export async function findExactSemanticVersionTag(
     }
   }
 
-  const expected = isSha1Hash(target)
-    ? "a commit"
-    : "an exact semantic version tag";
-
   throw new Error(
-    `Expected to find ${expected} matching ${target} for ${slug.owner}/${slug.repository}`
+    `Expected to find an exact semantic version tag matching ${target} for ${slug.owner}/${slug.repository}`
   );
 }
 
