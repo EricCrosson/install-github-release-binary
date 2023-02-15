@@ -47,7 +47,7 @@ Install multiple binaries:
     targets: |
       EricCrosson/flux-capacitor@v1
       EricCrosson/steam-locomotive@v7.5.3
-      EricCrosson/hoverboard@7382f9a3ce14be1fd8b3656d262fc2c720c8f51c
+      EricCrosson/hoverboard@11.7.3:sha256-8a4600be96d2ec013209042458ce97a9652fcc46c1c855d0217aa42e330fc06e
 ```
 
 ## Inputs
@@ -62,12 +62,14 @@ Install multiple binaries:
 Specify a whitespace-separated list of targets.
 
 Each target is specified by repo slug and a [semantic version number] using the format `{owner}/{repository}@v{semantic-version}`.
+Optionally, include a sha256 checksum.
 
 Examples:
 
 - `EricCrosson/flux-capacitor@v1`
 - `EricCrosson/flux-capacitor@v1.2`
 - `EricCrosson/flux-capacitor@v1.2.3`
+- `EricCrosson/flux-capacitor@v1.2.3:sha256-ad91159c656d427ad8fe5ded2946f29f3a612c6b7a4af6129e9aa85256b7299e`
 
 [semantic version number]: https://semver.org/
 

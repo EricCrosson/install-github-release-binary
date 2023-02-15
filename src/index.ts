@@ -1,3 +1,4 @@
+import { createHash } from "node:crypto";
 import { arch, platform } from "node:os";
 import * as fs from "node:fs";
 import * as path from "node:path";
@@ -23,6 +24,7 @@ import type {
   RepositorySlug,
   TargetRelease,
 } from "./types";
+import { isSome } from "./option";
 
 function getDestinationDirectory(
   storageDirectory: string,
@@ -102,6 +104,27 @@ async function installGitHubReleaseBinary(
 
     if (enableCache) {
       await cache.saveCache(cachePaths, cacheKey);
+    }
+  }
+
+  // No matter where the binary was sourced from, ensure it matches the
+  // expected checksum
+  if (isSome(targetRelease.checksum)) {
+    const fileBuffer = fs.readFileSync(destinationFilename);
+    const hash = createHash("sha256");
+    hash.update(fileBuffer);
+    const calculatedChecksum = hash.digest("hex");
+    const expectedChecksum = targetRelease.checksum.value;
+    if (calculatedChecksum !== expectedChecksum) {
+      const target = `${targetRelease.slug}@${targetRelease.tag}:sha256-${expectedChecksum}`;
+      console.error(
+        `Expected checksum ${expectedChecksum}, but got ${calculatedChecksum}`
+      );
+      throw new Error(`Unexpected checksum for ${target}`);
+    } else {
+      console.debug(
+        `Calculated checksum ${calculatedChecksum} matches expected checksum ${expectedChecksum}`
+      );
     }
   }
 
