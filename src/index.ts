@@ -42,7 +42,7 @@ function getDestinationDirectory(
 
 async function installGitHubReleaseBinary(
   octokit: Octokit,
-  targetReleases: TargetRelease,
+  targetRelease: TargetRelease,
   storageDirectory: string,
   enableCache: boolean,
   token: string
@@ -51,18 +51,18 @@ async function installGitHubReleaseBinary(
 
   const releaseTag = await findExactSemanticVersionTag(
     octokit,
-    targetReleases.slug,
-    targetReleases.tag
+    targetRelease.slug,
+    targetRelease.tag
   );
 
   const destinationDirectory = getDestinationDirectory(
     storageDirectory,
-    targetReleases.slug,
+    targetRelease.slug,
     releaseTag,
     platform(),
     arch()
   );
-  const destinationBasename = targetReleases.slug.repository;
+  const destinationBasename = targetRelease.slug.repository;
   const destinationFilename = path.join(
     destinationDirectory,
     destinationBasename
@@ -73,8 +73,8 @@ async function installGitHubReleaseBinary(
   // so upstream updates are always pulled in.
   const cachePaths = [destinationFilename];
   const cacheKey = [
-    targetReleases.slug.owner.toLowerCase(),
-    targetReleases.slug.repository.toLowerCase(),
+    targetRelease.slug.owner.toLowerCase(),
+    targetRelease.slug.repository.toLowerCase(),
     releaseTag,
     targetTriple,
   ].join("-");
@@ -87,7 +87,7 @@ async function installGitHubReleaseBinary(
   if (restoreCache === undefined) {
     const releaseAsset = await fetchReleaseAssetMetadataFromTag(
       octokit,
-      targetReleases.slug,
+      targetRelease.slug,
       releaseTag,
       targetTriple
     );
