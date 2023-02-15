@@ -1,3 +1,10 @@
+# [2.2.0](https://github.com/EricCrosson/install-github-release-binary/compare/v2.1.2...v2.2.0) (2023-02-15)
+
+
+### Features
+
+* add support for specifying sha256 checksum of downloaded binary ([f179c9f](https://github.com/EricCrosson/install-github-release-binary/commit/f179c9f209e093d51f51edcda9306ab7906dd330)), closes [#26](https://github.com/EricCrosson/install-github-release-binary/issues/26)
+
 ## [2.1.2](https://github.com/EricCrosson/install-github-release-binary/compare/v2.1.1...v2.1.2) (2023-02-13)
 
 
