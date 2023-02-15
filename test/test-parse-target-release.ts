@@ -3,7 +3,8 @@ import assert from "node:assert/strict";
 
 import { parseTargetReleases } from "../src/parse";
 import { Either, error, isErr, isOk, ok } from "../src/either";
-import type { SemanticVersion, TargetRelease } from "../src/types";
+import type { SemanticVersion, Sha256Hash, TargetRelease } from "../src/types";
+import { none, some } from "../src/option";
 
 function err<A>(): Either<A> {
   return error([""]);
@@ -45,6 +46,26 @@ test(
           repository: "bar",
         },
         tag: "v1" as SemanticVersion,
+        checksum: none(),
+      },
+    ])
+  )
+);
+
+test(
+  "should parse a slug and version and regex",
+  check(
+    "foo/bar@v1:sha256-8a4600be96d2ec013209042458ce97a9652fcc46c1c855d0217aa42e330fc06e",
+    ok([
+      {
+        slug: {
+          owner: "foo",
+          repository: "bar",
+        },
+        tag: "v1" as SemanticVersion,
+        checksum: some(
+          "8a4600be96d2ec013209042458ce97a9652fcc46c1c855d0217aa42e330fc06e" as Sha256Hash
+        ),
       },
     ])
   )
@@ -61,6 +82,7 @@ test(
           repository: "bar",
         },
         tag: "v1" as SemanticVersion,
+        checksum: none(),
       },
       {
         slug: {
@@ -68,6 +90,7 @@ test(
           repository: "baz",
         },
         tag: "v2.3.4" as SemanticVersion,
+        checksum: none(),
       },
     ])
   )
@@ -85,6 +108,7 @@ test(
           repository: "bar",
         },
         tag: "v1" as SemanticVersion,
+        checksum: none(),
       },
       {
         slug: {
@@ -92,6 +116,7 @@ test(
           repository: "baz",
         },
         tag: "v2.3.4" as SemanticVersion,
+        checksum: none(),
       },
     ])
   )
@@ -110,6 +135,7 @@ test(
           repository: "bar",
         },
         tag: "v1" as SemanticVersion,
+        checksum: none(),
       },
       {
         slug: {
@@ -117,6 +143,7 @@ test(
           repository: "baz",
         },
         tag: "v2.3.4" as SemanticVersion,
+        checksum: none(),
       },
     ])
   )

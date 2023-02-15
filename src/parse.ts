@@ -1,13 +1,15 @@
 import { Either, error, isOk, ok } from "./either";
-import type { SemanticVersion, TargetRelease } from "./types";
+import { none, some } from "./option";
+import type { SemanticVersion, Sha256Hash, TargetRelease } from "./types";
 
 const regexes = {
   owner: /\S+/,
   repository: /\S+/,
-  majorSemanticVersion: /v(0|[1-9]\d*)/,
-  majorMinorSemanticVersion: /v(0|[1-9]\d*)\.(0|[1-9]\d*)/,
+  majorSemanticVersion: /v(?:0|[1-9]\d*)/,
+  majorMinorSemanticVersion: /v(?:0|[1-9]\d*)\.(?:0|[1-9]\d*)/,
   exactSemanticVersion:
-    /v(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-((?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\+([0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?/,
+    /v(?:0|[1-9]\d*)\.(?:0|[1-9]\d*)\.(?:0|[1-9]\d*)(?:-(?:(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\+(?:[0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?/,
+  sha256Hash: /[a-fA-F0-9]{64}/,
 };
 
 export function parseEnvironmentVariable(envVarName: string): Either<string> {
@@ -39,21 +41,24 @@ function parseTargetReleaseVersion(value: string): Either<TargetRelease> {
     majorSemanticVersion,
     majorMinorSemanticVersion,
     exactSemanticVersion,
+    sha256Hash,
   } = regexes;
   const regex = new RegExp(
-    `^(${owner.source})/(${repository.source})@(${majorSemanticVersion.source}|${majorMinorSemanticVersion.source}|${exactSemanticVersion.source})$`
+    `^(${owner.source})/(${repository.source})@(${majorSemanticVersion.source}|${majorMinorSemanticVersion.source}|${exactSemanticVersion.source})(?::sha256-(${sha256Hash.source}))?$`
   );
   const match = value.match(regex);
   if (match === null) {
     // This error message is never used
     return error(["not a valid target release"]);
   }
+  console.log(match);
   const target: TargetRelease = {
     slug: {
       owner: match[1] as string,
       repository: match[2] as string,
     },
     tag: match[3] as SemanticVersion,
+    checksum: match[4] !== undefined ? some(match[4] as Sha256Hash) : none(),
   };
   return ok(target);
 }

@@ -1,3 +1,5 @@
+import type { Option } from "./option";
+
 /**
  * The following formats are valid:
  * - v1
@@ -22,6 +24,7 @@ export function isExactSemanticVersion(
 }
 
 export type Sha1Hash = string & { readonly __tag: unique symbol };
+export type Sha256Hash = string & { readonly __tag: unique symbol };
 
 export type RepositorySlug = {
   owner: string;
@@ -33,4 +36,5 @@ export type TargetTriple = string & { readonly __tag: unique symbol };
 export type TargetRelease = {
   slug: RepositorySlug;
   tag: SemanticVersion;
+  checksum: Option<Sha256Hash>;
 };
