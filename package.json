@@ -26,7 +26,7 @@
     "@actions/github": "5.1.1",
     "@actions/tool-cache": "2.0.1",
     "@octokit/plugin-throttling": "5.0.1",
-    "esbuild": "0.17.8"
+    "esbuild": "0.17.9"
   },
   "devDependencies": {
     "@semantic-release/changelog": "6.0.2",
