@@ -1,3 +1,10 @@
+## [2.2.2](https://github.com/EricCrosson/install-github-release-binary/compare/v2.2.1...v2.2.2) (2023-02-19)
+
+
+### Bug Fixes
+
+* **deps:** move esbuild to prod dependencies ([3409f49](https://github.com/EricCrosson/install-github-release-binary/commit/3409f4997d8b54573bd50fb8f9d0324239f37c7a))
+
 ## [2.2.1](https://github.com/EricCrosson/install-github-release-binary/compare/v2.2.0...v2.2.1) (2023-02-19)
 
 
