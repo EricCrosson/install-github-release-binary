@@ -1,3 +1,10 @@
+## [2.2.1](https://github.com/EricCrosson/install-github-release-binary/compare/v2.2.0...v2.2.1) (2023-02-19)
+
+
+### Bug Fixes
+
+* remove console.log ([4d2722a](https://github.com/EricCrosson/install-github-release-binary/commit/4d2722ac9e1e66be5b98f17950df10f0b8d022f8))
+
 # [2.2.0](https://github.com/EricCrosson/install-github-release-binary/compare/v2.1.2...v2.2.0) (2023-02-15)
 
 
