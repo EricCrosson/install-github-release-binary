@@ -51,7 +51,6 @@ function parseTargetReleaseVersion(value: string): Either<TargetRelease> {
     // This error message is never used
     return error(["not a valid target release"]);
   }
-  console.log(match);
   const target: TargetRelease = {
     slug: {
       owner: match[1] as string,
