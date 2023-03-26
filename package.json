@@ -8,7 +8,6 @@
     "type": "git",
     "url": "git+https://github.com/EricCrosson/install-github-release-binary.git"
   },
-  "keywords": [],
   "author": "Eric Crosson <eric.s.crosson@utexas.edu>",
   "license": "ISC",
   "bugs": {
