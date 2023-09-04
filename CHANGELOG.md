@@ -1,3 +1,11 @@
+## [2.2.48](https://github.com/EricCrosson/install-github-release-binary/compare/v2.2.47...v2.2.48) (2023-09-04)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @octokit/plugin-throttling to v7 ([c4b4aa6](https://github.com/EricCrosson/install-github-release-binary/commit/c4b4aa6e3f586a43e943513a4e70917d9e4ef3bd))
+* replace @actions/github with @octokit/rest ([f905de8](https://github.com/EricCrosson/install-github-release-binary/commit/f905de848063657cd9832b506c58b27e68254567))
+
 ## [2.2.47](https://github.com/EricCrosson/install-github-release-binary/compare/v2.2.46...v2.2.47) (2023-09-04)
 
 
