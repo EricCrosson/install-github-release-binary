@@ -81,3 +81,10 @@ Defaults to the `${{ github.token }}` created automatically by GitHub Actions.
 To install a binary from a private GitHub repository, use a [Personal Access Token].
 
 [personal access token]: https://docs.github.com/en/enterprise-server@3.4/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token
+
+## Versioning
+
+This action assumes it is running on a [GitHub-hosted runner], so bumping any dependency to a version [preinstalled] on GitHub-hosted runners is not considered a breaking change.
+
+[github-hosted runner]: https://docs.github.com/en/actions/using-github-hosted-runners/about-github-hosted-runners
+[preinstalled]: https://docs.github.com/en/actions/using-github-hosted-runners/about-github-hosted-runners#preinstalled-software
