@@ -1,28 +1,29 @@
 import * as core from "@actions/core";
-import { GitHub, getOctokitOptions } from "@actions/github/lib/utils";
+import { Octokit } from "@octokit/rest";
 import { throttling } from "@octokit/plugin-throttling";
 
-const ThrottlingOctokit = GitHub.plugin(throttling);
-export type Octokit = ReturnType<typeof getOctokit>;
+export type { Octokit } from "@octokit/rest";
 
-export function getOctokit(token: string) {
+const ThrottlingOctokit = Octokit.plugin(throttling);
+
+export function getOctokit(token: string): Octokit {
   return new ThrottlingOctokit({
+    auth: token,
     throttle: {
-      onRateLimit: (retryAfter: number, options: any) => {
+      onRateLimit: (retryAfter, options: any) => {
         core.warning(
           `RateLimit detected for request ${options.method} ${options.url}.`
         );
         core.info(`Retrying after ${retryAfter} seconds.`);
         return true;
       },
-      onSecondaryRateLimit: (retryAfter: number, options: any) => {
+      onSecondaryRateLimit: (retryAfter, options: any) => {
+        // does not retry, only logs a warning
         core.warning(
           `SecondaryRateLimit detected for request ${options.method} ${options.url}.`
         );
         core.info(`Retrying after ${retryAfter} seconds.`);
-        return true;
       },
     },
-    ...getOctokitOptions(token),
   });
 }
