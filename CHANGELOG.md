@@ -1,3 +1,10 @@
+## [2.2.47](https://github.com/EricCrosson/install-github-release-binary/compare/v2.2.46...v2.2.47) (2023-09-04)
+
+
+### Bug Fixes
+
+* update default runtime from node16 to node20 ([483b858](https://github.com/EricCrosson/install-github-release-binary/commit/483b8582445b7f0f74a0c972a63561fe4495fdaf))
+
 ## [2.2.46](https://github.com/EricCrosson/install-github-release-binary/compare/v2.2.45...v2.2.46) (2023-08-14)
 
 
