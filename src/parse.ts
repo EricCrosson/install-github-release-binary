@@ -70,7 +70,7 @@ function parseTargetRelease(value: string): Either<TargetRelease> {
   }
 
   return error([
-    `input.targetes invalid -- '${value}' does not match expected format '{owner}/{repository}@{tag}' (example: EricCrosson/git-disjoint@v2)`,
+    `input.targets contains invalid target -- '${value}' does not match expected format '{owner}/{repository}@{tag}' (example: EricCrosson/git-disjoint@v2)`,
   ]);
 }
 
