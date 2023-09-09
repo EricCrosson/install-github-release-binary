@@ -1,3 +1,10 @@
+## [2.2.49](https://github.com/EricCrosson/install-github-release-binary/compare/v2.2.48...v2.2.49) (2023-09-09)
+
+
+### Bug Fixes
+
+* correct typo in error message ([32c8bbe](https://github.com/EricCrosson/install-github-release-binary/commit/32c8bbe35b5171de8c5c146a88dab865eb407080))
+
 ## [2.2.48](https://github.com/EricCrosson/install-github-release-binary/compare/v2.2.47...v2.2.48) (2023-09-04)
 
 
