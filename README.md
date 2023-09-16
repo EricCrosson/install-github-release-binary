@@ -18,7 +18,7 @@ This action only supports installing from releases where the release:
 
 - is tagged with the full `{major}.{minor}.{patch}` semantic version
 - contains raw binary assets (archives not supported)
-- assets are labeled ending with the binary's [target triple]
+- assets are labeled with the binary's [target triple]
 - the binary name is the repository name
 
 You can create compatible releases with [semantic-release], using a workflow like [semantic-release-action/rust].
