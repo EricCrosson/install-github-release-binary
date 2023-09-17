@@ -24,37 +24,38 @@ import type {
   RepositorySlug,
   TargetRelease,
 } from "./types";
-import { isSome } from "./option";
+import { isSome, unwrapOrDefault } from "./option";
 
 function getDestinationDirectory(
   storageDirectory: string,
   slug: RepositorySlug,
   tag: ExactSemanticVersion,
   platform: NodeJS.Platform,
-  architecture: string
+  architecture: string,
 ): string {
   return path.join(
     storageDirectory,
     slug.owner.toLowerCase(),
     slug.repository.toLowerCase(),
     tag,
-    `${platform}-${architecture}`
+    `${platform}-${architecture}`,
   );
 }
 
+// RESUME:
 async function installGitHubReleaseBinary(
   octokit: Octokit,
   targetRelease: TargetRelease,
   storageDirectory: string,
   enableCache: boolean,
-  token: string
+  token: string,
 ): Promise<void> {
   const targetTriple = getTargetTriple(arch(), platform());
 
   const releaseTag = await findExactSemanticVersionTag(
     octokit,
     targetRelease.slug,
-    targetRelease.tag
+    targetRelease.tag,
   );
 
   const destinationDirectory = getDestinationDirectory(
@@ -62,12 +63,15 @@ async function installGitHubReleaseBinary(
     targetRelease.slug,
     releaseTag,
     platform(),
-    arch()
+    arch(),
   );
-  const destinationBasename = targetRelease.slug.repository;
+  const destinationBasename = unwrapOrDefault(
+    targetRelease.binaryName,
+    targetRelease.slug.repository,
+  );
   const destinationFilename = path.join(
     destinationDirectory,
-    destinationBasename
+    destinationBasename,
   );
 
   // Try to restore from the cache.
@@ -90,8 +94,9 @@ async function installGitHubReleaseBinary(
     const releaseAsset = await fetchReleaseAssetMetadataFromTag(
       octokit,
       targetRelease.slug,
+      targetRelease.binaryName,
       releaseTag,
-      targetTriple
+      targetTriple,
     );
 
     fs.mkdirSync(destinationDirectory, { recursive: true });
@@ -99,7 +104,7 @@ async function installGitHubReleaseBinary(
       releaseAsset.url,
       destinationFilename,
       `token ${token}`,
-      { accept: "application/octet-stream" }
+      { accept: "application/octet-stream" },
     );
 
     if (enableCache) {
@@ -117,13 +122,13 @@ async function installGitHubReleaseBinary(
     const expectedChecksum = targetRelease.checksum.value;
     if (calculatedChecksum !== expectedChecksum) {
       const target = `${targetRelease.slug}@${targetRelease.tag}:sha256-${expectedChecksum}`;
-      console.error(
-        `Expected checksum ${expectedChecksum}, but got ${calculatedChecksum}`
+      core.error(
+        `Expected checksum ${expectedChecksum}, but got ${calculatedChecksum}`,
       );
       throw new Error(`Unexpected checksum for ${target}`);
     } else {
-      console.debug(
-        `Calculated checksum ${calculatedChecksum} matches expected checksum ${expectedChecksum}`
+      core.debug(
+        `Calculated checksum ${calculatedChecksum} matches expected checksum ${expectedChecksum}`,
       );
     }
   }
@@ -136,13 +141,13 @@ async function installGitHubReleaseBinary(
 
 async function main(): Promise<void> {
   const maybeToken = parseToken(
-    process.env["GITHUB_TOKEN"] || core.getInput("token")
+    process.env["GITHUB_TOKEN"] || core.getInput("token"),
   );
   const maybeTargetReleases = parseTargetReleases(core.getInput("targets"));
   const maybeHomeDirectory = parseEnvironmentVariable("HOME");
 
   const errors = [maybeToken, maybeTargetReleases, maybeHomeDirectory].flatMap(
-    getErrors
+    getErrors,
   );
   if (errors.length > 0) {
     errors.forEach((error) => core.error(error));
@@ -157,10 +162,12 @@ async function main(): Promise<void> {
   const storageDirectory = path.join(
     homeDirectory,
     ".install-github-release-binary",
-    "bin"
+    "bin",
   );
   const octokit = getOctokit(token);
 
+  // REFACTOR(OPTIMIZE): if two targets can be pulled from the same
+  // release, we can make that happen with fewer API calls
   await Promise.all(
     targetReleases.map((targetRelease) =>
       installGitHubReleaseBinary(
@@ -168,9 +175,9 @@ async function main(): Promise<void> {
         targetRelease,
         storageDirectory,
         enableCache,
-        token
-      )
-    )
+        token,
+      ),
+    ),
   );
 }
 
