@@ -1,3 +1,10 @@
+# [2.3.0](https://github.com/EricCrosson/install-github-release-binary/compare/v2.2.51...v2.3.0) (2023-09-17)
+
+
+### Features
+
+* support targeting one binary from a release containing multiple ([d7e0172](https://github.com/EricCrosson/install-github-release-binary/commit/d7e01721da285e7c23033031bc293ba98cd6ffc2))
+
 # [2.3.0-beta.1](https://github.com/EricCrosson/install-github-release-binary/compare/v2.2.51...v2.3.0-beta.1) (2023-09-17)
 
 
