@@ -24,3 +24,10 @@ export function isEqual<A>(value: Option<A>, to: A): boolean {
   }
   return value.value === to;
 }
+
+export function unwrapOrDefault<A>(value: Option<A>, orElse: A): A {
+  if (value.tag === "some") {
+    return value.value;
+  }
+  return orElse;
+}

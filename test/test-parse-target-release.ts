@@ -3,7 +3,12 @@ import assert from "node:assert/strict";
 
 import { parseTargetReleases } from "../src/parse";
 import { Either, error, isErr, isOk, ok } from "../src/either";
-import type { SemanticVersion, Sha256Hash, TargetRelease } from "../src/types";
+import type {
+  BinaryName,
+  SemanticVersion,
+  Sha256Hash,
+  TargetRelease,
+} from "../src/types";
 import { none, some } from "../src/option";
 
 function err<A>(): Either<A> {
@@ -12,7 +17,7 @@ function err<A>(): Either<A> {
 
 function check(
   input: string,
-  expectedOutput: Either<readonly TargetRelease[]>
+  expectedOutput: Either<readonly TargetRelease[]>,
 ) {
   // wrap in a thunk so we can pass it directly to `test`
   const actualOutput = parseTargetReleases(input);
@@ -32,7 +37,7 @@ test("should not parse a slug without a version", check("foo/bar", err()));
 
 test(
   "should not parse a slug without a version starting with v",
-  check("foo/bar@1", err())
+  check("foo/bar@1", err()),
 );
 
 test(
@@ -45,11 +50,12 @@ test(
           owner: "foo",
           repository: "bar",
         },
+        binaryName: none(),
         tag: "v1" as SemanticVersion,
         checksum: none(),
       },
-    ])
-  )
+    ]),
+  ),
 );
 
 test(
@@ -62,13 +68,14 @@ test(
           owner: "foo",
           repository: "bar",
         },
+        binaryName: none(),
         tag: "v1" as SemanticVersion,
         checksum: some(
-          "8a4600be96d2ec013209042458ce97a9652fcc46c1c855d0217aa42e330fc06e" as Sha256Hash
+          "8a4600be96d2ec013209042458ce97a9652fcc46c1c855d0217aa42e330fc06e" as Sha256Hash,
         ),
       },
-    ])
-  )
+    ]),
+  ),
 );
 
 test(
@@ -81,6 +88,7 @@ test(
           owner: "foo",
           repository: "bar",
         },
+        binaryName: none(),
         tag: "v1" as SemanticVersion,
         checksum: none(),
       },
@@ -89,11 +97,12 @@ test(
           owner: "qux",
           repository: "baz",
         },
+        binaryName: none(),
         tag: "v2.3.4" as SemanticVersion,
         checksum: none(),
       },
-    ])
-  )
+    ]),
+  ),
 );
 
 test(
@@ -107,6 +116,7 @@ test(
           owner: "foo",
           repository: "bar",
         },
+        binaryName: none(),
         tag: "v1" as SemanticVersion,
         checksum: none(),
       },
@@ -115,11 +125,12 @@ test(
           owner: "qux",
           repository: "baz",
         },
+        binaryName: none(),
         tag: "v2.3.4" as SemanticVersion,
         checksum: none(),
       },
-    ])
-  )
+    ]),
+  ),
 );
 
 test(
@@ -134,6 +145,7 @@ test(
           owner: "foo",
           repository: "bar",
         },
+        binaryName: none(),
         tag: "v1" as SemanticVersion,
         checksum: none(),
       },
@@ -142,9 +154,48 @@ test(
           owner: "qux",
           repository: "baz",
         },
+        binaryName: none(),
         tag: "v2.3.4" as SemanticVersion,
         checksum: none(),
       },
-    ])
-  )
+    ]),
+  ),
+);
+
+test(
+  "should parse a named binary",
+  check(
+    "owner/repository/binary-name@v1",
+    ok([
+      {
+        slug: {
+          owner: "owner",
+          repository: "repository",
+        },
+        binaryName: some("binary-name" as BinaryName),
+        tag: "v1" as SemanticVersion,
+        checksum: none(),
+      },
+    ]),
+  ),
+);
+
+test(
+  "should parse a named binary with a checksum",
+  check(
+    "owner/repository/binary-name@v1:sha256-8a4600be96d2ec013209042458ce97a9652fcc46c1c855d0217aa42e330fc06e",
+    ok([
+      {
+        slug: {
+          owner: "owner",
+          repository: "repository",
+        },
+        binaryName: some("binary-name" as BinaryName),
+        tag: "v1" as SemanticVersion,
+        checksum: some(
+          "8a4600be96d2ec013209042458ce97a9652fcc46c1c855d0217aa42e330fc06e" as Sha256Hash,
+        ),
+      },
+    ]),
+  ),
 );

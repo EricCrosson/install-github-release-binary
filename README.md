@@ -18,8 +18,9 @@ This action only supports installing from releases where the release:
 
 - is tagged with the full `{major}.{minor}.{patch}` semantic version
 - contains raw binary assets (archives not supported)
-- assets are labeled with the binary's [target triple]
-- the binary name is the repository name
+- assets are labeled as follows:
+  - when there is a single binary associated with a release, the label is the binary's [target triple]
+  - when there are multiple binaries associated with a release, the label is `<binary name>-<target triple>`
 
 You can create compatible releases with [semantic-release], using a workflow like [semantic-release-action/rust].
 
@@ -38,16 +39,30 @@ Use this action in a step:
     targets: EricCrosson/flux-capacitor@v1
 ```
 
+> **Note**
+> I recommend adding an explicit step name, otherwise the step will only reference
+> `EricCrosson/install-github-release-binary@v2`, not your targets.
+
 Install multiple binaries:
 
 ```yaml
-- name: Install flux-capacitor
+- name: Install future tools
   uses: EricCrosson/install-github-release-binary@v2
   with:
     targets: |
       EricCrosson/flux-capacitor@v1
       EricCrosson/steam-locomotive@v7.5.3
       EricCrosson/hoverboard@11.7.3:sha256-8a4600be96d2ec013209042458ce97a9652fcc46c1c855d0217aa42e330fc06e
+```
+
+Install a binary from a release with multiple binaries available:
+
+```yaml
+- name: Install flux-capacitor
+  uses: EricCrosson/install-github-release-binary@v2
+  with:
+    targets: |
+      EricCrosson/future-tools/flux-capacitor@v1
 ```
 
 ## Inputs
@@ -62,7 +77,10 @@ Install multiple binaries:
 Specify a whitespace-separated list of targets.
 
 Each target is specified by repo slug and a [semantic version number] using the format `{owner}/{repository}@v{semantic-version}`.
-Optionally, include a sha256 checksum.
+Optionally, include:
+
+- the particular binary to install (required when a release contains multiple binaries)
+- a sha256 checksum
 
 Examples:
 
@@ -70,6 +88,7 @@ Examples:
 - `EricCrosson/flux-capacitor@v1.2`
 - `EricCrosson/flux-capacitor@v1.2.3`
 - `EricCrosson/flux-capacitor@v1.2.3:sha256-ad91159c656d427ad8fe5ded2946f29f3a612c6b7a4af6129e9aa85256b7299e`
+- `EricCrosson/future-tools/flux-capacitor@v1`
 
 [semantic version number]: https://semver.org/
 

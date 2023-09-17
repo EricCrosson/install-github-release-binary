@@ -1,10 +1,16 @@
 import { Either, error, isOk, ok } from "./either";
 import { none, some } from "./option";
-import type { SemanticVersion, Sha256Hash, TargetRelease } from "./types";
+import type {
+  BinaryName,
+  SemanticVersion,
+  Sha256Hash,
+  TargetRelease,
+} from "./types";
 
 const regexes = {
-  owner: /\S+/,
-  repository: /\S+/,
+  owner: /[^\s\/]+/,
+  repository: /[^\s\/]+/,
+  binaryName: /[^\s@]+/,
   majorSemanticVersion: /v(?:0|[1-9]\d*)/,
   majorMinorSemanticVersion: /v(?:0|[1-9]\d*)\.(?:0|[1-9]\d*)/,
   exactSemanticVersion:
@@ -38,13 +44,14 @@ function parseTargetReleaseVersion(value: string): Either<TargetRelease> {
   const {
     owner,
     repository,
+    binaryName,
     majorSemanticVersion,
     majorMinorSemanticVersion,
     exactSemanticVersion,
     sha256Hash,
   } = regexes;
   const regex = new RegExp(
-    `^(${owner.source})/(${repository.source})@(${majorSemanticVersion.source}|${majorMinorSemanticVersion.source}|${exactSemanticVersion.source})(?::sha256-(${sha256Hash.source}))?$`
+    `^(${owner.source})/(${repository.source})(/${binaryName.source})?@(${majorSemanticVersion.source}|${majorMinorSemanticVersion.source}|${exactSemanticVersion.source})(?::sha256-(${sha256Hash.source}))?$`,
   );
   const match = value.match(regex);
   if (match === null) {
@@ -56,9 +63,14 @@ function parseTargetReleaseVersion(value: string): Either<TargetRelease> {
       owner: match[1] as string,
       repository: match[2] as string,
     },
-    tag: match[3] as SemanticVersion,
-    checksum: match[4] !== undefined ? some(match[4] as Sha256Hash) : none(),
+    binaryName:
+      match[3] !== undefined
+        ? some(match[3]!.substring(1) as BinaryName)
+        : none(),
+    tag: match[4] as SemanticVersion,
+    checksum: match[5] !== undefined ? some(match[5] as Sha256Hash) : none(),
   };
+
   return ok(target);
 }
 

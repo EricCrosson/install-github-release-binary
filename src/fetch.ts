@@ -8,6 +8,7 @@ import {
   SemanticVersion,
   Sha1Hash,
   TargetTriple,
+  BinaryName,
 } from "./types";
 
 type Commit = {
@@ -23,7 +24,7 @@ export type Tag = {
 export type TagsResponse = ReadonlyArray<Tag>;
 
 function containsExactTag(
-  tags: readonly SemanticVersion[] | undefined
+  tags: readonly SemanticVersion[] | undefined,
 ): ExactSemanticVersion | undefined {
   if (tags === undefined) {
     return undefined;
@@ -33,7 +34,7 @@ function containsExactTag(
 
 // This function is only exported for testing.
 export function semanticVersionTagReducer(
-  givenTag: SemanticVersion
+  givenTag: SemanticVersion,
 ): (tag: Tag) => Option<ExactSemanticVersion> {
   const versionsBySha: Record<Sha1Hash, SemanticVersion[]> = {};
   let givenTagSha: Option<Sha1Hash> = none();
@@ -90,7 +91,7 @@ export function semanticVersionTagReducer(
 export async function findExactSemanticVersionTag(
   octokit: Octokit,
   slug: RepositorySlug,
-  target: SemanticVersion
+  target: SemanticVersion,
 ): Promise<ExactSemanticVersion> {
   if (isExactSemanticVersion(target)) {
     return target;
@@ -104,7 +105,7 @@ export async function findExactSemanticVersionTag(
       owner: slug.owner,
       repo: slug.repository,
       per_page: 100,
-    }
+    },
   )) {
     // NOTE: we are not parsing here, so this is an unlawful type cast
     for (const tag of response.data as unknown as TagsResponse) {
@@ -116,7 +117,7 @@ export async function findExactSemanticVersionTag(
   }
 
   throw new Error(
-    `Expected to find an exact semantic version tag matching ${target} for ${slug.owner}/${slug.repository}`
+    `Expected to find an exact semantic version tag matching ${target} for ${slug.owner}/${slug.repository}`,
   );
 }
 
@@ -128,20 +129,25 @@ type ReleaseAssetMetadata = {
 export async function fetchReleaseAssetMetadataFromTag(
   octokit: Octokit,
   slug: RepositorySlug,
+  binaryName: Option<BinaryName>,
   tag: ExactSemanticVersion,
-  targetTriple: TargetTriple
+  targetTriple: TargetTriple,
 ): Promise<ReleaseAssetMetadata> {
+  // Maintainer's note: this impure function call makes this function difficult to test.
   const releaseMetadata = await octokit.rest.repos.getReleaseByTag({
     owner: slug.owner,
     repo: slug.repository,
     tag,
   });
+  const targetLabel = isSome(binaryName)
+    ? `${binaryName.value}-${targetTriple}`
+    : targetTriple;
   const asset = releaseMetadata.data.assets.find(
-    (asset) => asset.label === targetTriple
+    (asset) => asset.label === targetLabel,
   );
   if (asset === undefined) {
     throw new Error(
-      `Expected to find asset in release ${slug.owner}/${slug.repository}@${tag} with label ${targetTriple}`
+      `Expected to find asset in release ${slug.owner}/${slug.repository}@${tag} with label ${targetLabel}`,
     );
   }
   return {
