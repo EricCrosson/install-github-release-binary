@@ -1,4 +1,12 @@
 import type { TargetTriple } from "./types";
+import { none, some, type Option } from "./option";
+
+const ALL_TARGET_TRIPLES: readonly TargetTriple[] = [
+  "aarch64-apple-darwin",
+  "aarch64-unknown-linux-musl",
+  "x86_64-apple-darwin",
+  "x86_64-unknown-linux-musl",
+] as unknown as readonly TargetTriple[];
 
 function architectureLabel(arch: string): string {
   switch (arch) {
@@ -8,7 +16,7 @@ function architectureLabel(arch: string): string {
       return "x86_64";
     default:
       throw new Error(
-        `Unsupported architecture ${arch} -- only aarch64 and x86_64 currently supported`
+        `Unsupported architecture ${arch} -- only aarch64 and x86_64 currently supported`,
       );
   }
 }
@@ -31,16 +39,31 @@ function platformLabel(platform: NodeJS.Platform): PlatformDuple {
       };
     default:
       throw new Error(
-        `Unsupported platform ${platform} -- only darwin and linux currently supported`
+        `Unsupported platform ${platform} -- only darwin and linux currently supported`,
       );
   }
 }
 
 export function getTargetTriple(
   arch: string,
-  platform: NodeJS.Platform
+  platform: NodeJS.Platform,
 ): TargetTriple {
   const architecture = architectureLabel(arch);
   const { vendor, operatingSystem } = platformLabel(platform);
   return `${architecture}-${vendor}-${operatingSystem}` as TargetTriple;
+}
+
+/**
+ * String the string of its target triple suffix
+ */
+export function stripTargetTriple(value: string): Option<string> {
+  // Can't strip away the target tuple if nothing else remains
+  if (ALL_TARGET_TRIPLES.find((targetTriple) => targetTriple === value)) {
+    return none();
+  }
+  const stripped = ALL_TARGET_TRIPLES.reduce(
+    (value, targetTriple) => value.replace(new RegExp(`-${targetTriple}$`), ""),
+    value,
+  );
+  return some(stripped);
 }

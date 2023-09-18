@@ -1,5 +1,6 @@
 import type { Octokit } from "./octokit";
 import { isEqual, isSome, none, Option, some } from "./option";
+import { stripTargetTriple } from "./platform";
 
 import {
   isExactSemanticVersion,
@@ -122,7 +123,7 @@ export async function findExactSemanticVersionTag(
 }
 
 type ReleaseAssetMetadata = {
-  name: string;
+  binaryName: Option<string>;
   url: string;
 };
 
@@ -139,19 +140,49 @@ export async function fetchReleaseAssetMetadataFromTag(
     repo: slug.repository,
     tag,
   });
-  const targetLabel = isSome(binaryName)
-    ? `${binaryName.value}-${targetTriple}`
-    : targetTriple;
-  const asset = releaseMetadata.data.assets.find(
-    (asset) => asset.label === targetLabel,
+
+  // When the binary name is provided, look for matching binary and target triple.
+  if (isSome(binaryName)) {
+    const targetLabel = `${binaryName.value}-${targetTriple}`;
+    const asset = releaseMetadata.data.assets.find(
+      (asset) => asset.label === targetLabel,
+    );
+    if (asset === undefined) {
+      throw new Error(
+        `Expected to find asset in release ${slug.owner}/${slug.repository}@${tag} with label ${targetLabel}`,
+      );
+    }
+    return {
+      binaryName: binaryName,
+      url: asset.url,
+    };
+  }
+
+  // When the binary name is not provided, support two use cases:
+  // 1. There is only one binary uploaded to this release, a named binary.
+  // 2. There is an asset label matching the target triple (with no binary name).
+  // In both cases, we assume that's the binary the user meant.
+  // If there is ambiguity, exit with an error.
+  const matchingTargetTriples = releaseMetadata.data.assets.filter(
+    (asset) =>
+      typeof asset.label === "string" && asset.label.endsWith(targetTriple),
   );
-  if (asset === undefined) {
+  if (matchingTargetTriples.length === 0) {
     throw new Error(
-      `Expected to find asset in release ${slug.owner}/${slug.repository}@${tag} with label ${targetLabel}`,
+      `Expected to find asset in release ${slug.owner}/${slug.repository}@${tag} with label ending in ${targetTriple}`,
     );
   }
+  if (matchingTargetTriples.length > 1) {
+    throw new Error(
+      `Ambiguous targets: expected to find a single asset in release ${slug.owner}/${slug.repository}@${tag} matching target triple ${targetTriple}, but found ${matchingTargetTriples.length}.
+
+To resolve, specify the desired binary with the target format ${slug.owner}/${slug.repository}/<binary-name>@${tag}`,
+    );
+  }
+  const asset = matchingTargetTriples.shift()!;
+  const targetName = stripTargetTriple(asset.label!);
   return {
-    name: asset.name,
+    binaryName: targetName,
     url: asset.url,
   };
 }

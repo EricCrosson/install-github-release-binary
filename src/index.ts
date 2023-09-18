@@ -62,14 +62,6 @@ async function installGitHubReleaseBinary(
     platform(),
     arch(),
   );
-  const destinationBasename = unwrapOrDefault(
-    targetRelease.binaryName,
-    targetRelease.slug.repository,
-  );
-  const destinationFilename = path.join(
-    destinationDirectory,
-    destinationBasename,
-  );
 
   const releaseAsset = await fetchReleaseAssetMetadataFromTag(
     octokit,
@@ -77,6 +69,15 @@ async function installGitHubReleaseBinary(
     targetRelease.binaryName,
     releaseTag,
     targetTriple,
+  );
+
+  const destinationBasename = unwrapOrDefault(
+    releaseAsset.binaryName,
+    targetRelease.slug.repository,
+  );
+  const destinationFilename = path.join(
+    destinationDirectory,
+    destinationBasename,
   );
 
   fs.mkdirSync(destinationDirectory, { recursive: true });
