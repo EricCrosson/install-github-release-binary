@@ -3,7 +3,6 @@ import { arch, platform } from "node:os";
 import * as fs from "node:fs";
 import * as path from "node:path";
 
-import * as cache from "@actions/cache";
 import * as core from "@actions/core";
 import * as tc from "@actions/tool-cache";
 
@@ -42,12 +41,10 @@ function getDestinationDirectory(
   );
 }
 
-// RESUME:
 async function installGitHubReleaseBinary(
   octokit: Octokit,
   targetRelease: TargetRelease,
   storageDirectory: string,
-  enableCache: boolean,
   token: string,
 ): Promise<void> {
   const targetTriple = getTargetTriple(arch(), platform());
@@ -74,46 +71,23 @@ async function installGitHubReleaseBinary(
     destinationBasename,
   );
 
-  // Try to restore from the cache.
-  // Resolve exact semantic version tags before caching,
-  // so upstream updates are always pulled in.
-  const cachePaths = [destinationFilename];
-  const cacheKey = [
-    targetRelease.slug.owner.toLowerCase(),
-    targetRelease.slug.repository.toLowerCase(),
+  const releaseAsset = await fetchReleaseAssetMetadataFromTag(
+    octokit,
+    targetRelease.slug,
+    targetRelease.binaryName,
     releaseTag,
     targetTriple,
-  ].join("-");
+  );
 
-  const restoreCache = enableCache
-    ? await cache.restoreCache(cachePaths, cacheKey)
-    : undefined;
+  fs.mkdirSync(destinationDirectory, { recursive: true });
+  await tc.downloadTool(
+    releaseAsset.url,
+    destinationFilename,
+    `token ${token}`,
+    { accept: "application/octet-stream" },
+  );
 
-  // If unable to restore from the cache, download the binary from GitHub
-  if (restoreCache === undefined) {
-    const releaseAsset = await fetchReleaseAssetMetadataFromTag(
-      octokit,
-      targetRelease.slug,
-      targetRelease.binaryName,
-      releaseTag,
-      targetTriple,
-    );
-
-    fs.mkdirSync(destinationDirectory, { recursive: true });
-    await tc.downloadTool(
-      releaseAsset.url,
-      destinationFilename,
-      `token ${token}`,
-      { accept: "application/octet-stream" },
-    );
-
-    if (enableCache) {
-      await cache.saveCache(cachePaths, cacheKey);
-    }
-  }
-
-  // No matter where the binary was sourced from, ensure it matches the
-  // expected checksum
+  // Ensure the binary matches the expected checksum
   if (isSome(targetRelease.checksum)) {
     const fileBuffer = fs.readFileSync(destinationFilename);
     const hash = createHash("sha256");
@@ -157,7 +131,6 @@ async function main(): Promise<void> {
   const token = unwrap(maybeToken);
   const targetReleases = unwrap(maybeTargetReleases);
   const homeDirectory = unwrap(maybeHomeDirectory);
-  const enableCache = core.getInput("cache") === "true";
 
   const storageDirectory = path.join(
     homeDirectory,
@@ -174,7 +147,6 @@ async function main(): Promise<void> {
         octokit,
         targetRelease,
         storageDirectory,
-        enableCache,
         token,
       ),
     ),
