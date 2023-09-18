@@ -1,3 +1,15 @@
+# [2.4.0](https://github.com/EricCrosson/install-github-release-binary/compare/v2.3.0...v2.4.0) (2023-09-18)
+
+
+### Bug Fixes
+
+* disable the option to cache ([66f7e07](https://github.com/EricCrosson/install-github-release-binary/commit/66f7e07a9e2cb996fc9b47dbff9922ac0870f150)), closes [#6](https://github.com/EricCrosson/install-github-release-binary/issues/6)
+
+
+### Features
+
+* infer target binary when all release assets are named ([eeb9d3b](https://github.com/EricCrosson/install-github-release-binary/commit/eeb9d3b0b4a9d85a4097081377b646ed17b22c7a))
+
 # [2.3.0](https://github.com/EricCrosson/install-github-release-binary/compare/v2.2.51...v2.3.0) (2023-09-17)
 
 
