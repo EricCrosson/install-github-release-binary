@@ -1,3 +1,11 @@
+## [2.4.4](https://github.com/EricCrosson/install-github-release-binary/compare/v2.4.3...v2.4.4) (2023-10-24)
+
+
+### Bug Fixes
+
+* consistently start error messages with lowercase characters ([daa7089](https://github.com/EricCrosson/install-github-release-binary/commit/daa7089d957fdf1a61052ff21593f382e4974926))
+* fix misleading error message ([c89eef6](https://github.com/EricCrosson/install-github-release-binary/commit/c89eef6a1fdacd49f8d63aa44c660051704da5ff))
+
 ## [2.4.3](https://github.com/EricCrosson/install-github-release-binary/compare/v2.4.2...v2.4.3) (2023-10-17)
 
 
