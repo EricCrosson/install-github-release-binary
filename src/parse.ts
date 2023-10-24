@@ -35,7 +35,7 @@ export function parseEnvironmentVariable(envVarName: string): Either<string> {
 
 export function parseToken(value: string): Either<string> {
   if (value.length === 0) {
-    return error(["input.github expected to be non-empty"]);
+    return error(["expected input.token to be non-empty"]);
   }
   return ok(value);
 }
