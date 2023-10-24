@@ -22,12 +22,12 @@ export function parseEnvironmentVariable(envVarName: string): Either<string> {
   const value = process.env[envVarName];
   if (value === undefined) {
     return error([
-      `Expected environment variable '${envVarName}' to be defined`,
+      `expected environment variable '${envVarName}' to be defined`,
     ]);
   }
   if (value.length === 0) {
     return error([
-      `Expected environment variable '${envVarName}' to be non-empty`,
+      `expected environment variable '${envVarName}' to be non-empty`,
     ]);
   }
   return ok(value);
