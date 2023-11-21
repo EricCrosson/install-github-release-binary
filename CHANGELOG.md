@@ -1,3 +1,10 @@
+## [2.4.8](https://github.com/EricCrosson/install-github-release-binary/compare/v2.4.7...v2.4.8) (2023-11-21)
+
+
+### Bug Fixes
+
+* **deps:** update dependency esbuild to v0.19.7 ([57de260](https://github.com/EricCrosson/install-github-release-binary/commit/57de260ac57cb1850321453a9be9e8ef1d9dcf2f))
+
 ## [2.4.7](https://github.com/EricCrosson/install-github-release-binary/compare/v2.4.6...v2.4.7) (2023-11-19)
 
 
