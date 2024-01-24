@@ -37,7 +37,7 @@ Use this action in a step:
     targets: EricCrosson/flux-capacitor@v1
 ```
 
-> **Note**
+> [!NOTE]
 > I recommend adding an explicit step name, otherwise the step will only reference
 > `EricCrosson/install-github-release-binary@v2`, not your targets.
 
