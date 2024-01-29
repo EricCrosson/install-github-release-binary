@@ -15,7 +15,7 @@
   },
   "homepage": "https://github.com/EricCrosson/install-github-release-binary#readme",
   "scripts": {
-    "build": "esbuild src/index.ts --bundle --minify --platform=node --target=node16 --outfile=dist/index.js",
+    "build": "esbuild src/index.ts --bundle --platform=node --target=node16 --outfile=dist/index.js",
     "test": "node --import tsx --test test/test-*",
     "type-check": "tsc --noEmit"
   },
