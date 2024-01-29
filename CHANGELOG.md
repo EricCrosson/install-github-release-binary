@@ -1,3 +1,10 @@
+## [2.4.15](https://github.com/EricCrosson/install-github-release-binary/compare/v2.4.14...v2.4.15) (2024-01-29)
+
+
+### Bug Fixes
+
+* bundle without minification ([7904b51](https://github.com/EricCrosson/install-github-release-binary/commit/7904b51cc427763afce032f2b6adcae67a205d85)), closes [#161](https://github.com/EricCrosson/install-github-release-binary/issues/161)
+
 ## [2.4.14](https://github.com/EricCrosson/install-github-release-binary/compare/v2.4.13...v2.4.14) (2024-01-27)
 
 
