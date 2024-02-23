@@ -10345,7 +10345,7 @@ var require_dist_node13 = __commonJS({
     module2.exports = __toCommonJS2(dist_src_exports);
     var import_light = __toESM2(require_light());
     var import_core = require_dist_node8();
-    var VERSION = "8.1.3";
+    var VERSION = "8.2.0";
     var noop = () => Promise.resolve();
     function wrapRequest(state, request, options) {
       return state.retryLimiter.schedule(doRequest, state, request, options);
@@ -10369,11 +10369,7 @@ var require_dist_node13 = __commonJS({
       if (isSearch) {
         await state.search.key(state.id).schedule(jobOptions, noop);
       }
-      const req = state.global.key(state.id).schedule(
-        jobOptions,
-        request,
-        options
-      );
+      const req = state.global.key(state.id).schedule(jobOptions, request, options);
       if (isGraphQL) {
         const res = await req;
         if (res.data.errors != null && res.data.errors.some((error3) => error3.type === "RATE_LIMITED")) {
