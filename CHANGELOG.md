@@ -1,3 +1,10 @@
+## [2.4.19](https://github.com/EricCrosson/install-github-release-binary/compare/v2.4.18...v2.4.19) (2024-04-04)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @octokit/rest to v20.1.0 ([640ca6e](https://github.com/EricCrosson/install-github-release-binary/commit/640ca6eb91ed100cdc12083651b105f0a5f6d26c))
+
 ## [2.4.18](https://github.com/EricCrosson/install-github-release-binary/compare/v2.4.17...v2.4.18) (2024-03-15)
 
 
