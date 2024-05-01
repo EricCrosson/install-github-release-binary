@@ -33,7 +33,7 @@
     "@types/node": "20.12.7",
     "semantic-release": "23.0.8",
     "semantic-release-major-tag": "0.3.2",
-    "tsx": "4.7.3",
+    "tsx": "4.8.2",
     "typescript": "5.4.5"
   }
 }
