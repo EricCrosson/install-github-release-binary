@@ -24,7 +24,7 @@
     "@actions/tool-cache": "2.0.1",
     "@octokit/plugin-throttling": "8.2.0",
     "@octokit/rest": "20.1.1",
-    "esbuild": "0.21.4"
+    "esbuild": "0.21.5"
   },
   "devDependencies": {
     "@semantic-release/changelog": "6.0.3",
