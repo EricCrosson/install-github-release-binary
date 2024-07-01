@@ -1,3 +1,10 @@
+## [2.4.28](https://github.com/EricCrosson/install-github-release-binary/compare/v2.4.27...v2.4.28) (2024-07-01)
+
+
+### Reverts
+
+* Revert "fix(deps): update dependency esbuild to v0.22.0" ([ebfea19](https://github.com/EricCrosson/install-github-release-binary/commit/ebfea1965519c459b1fbe0ac8db8afb75df77bf3))
+
 ## [2.4.27](https://github.com/EricCrosson/install-github-release-binary/compare/v2.4.26...v2.4.27) (2024-07-01)
 
 
