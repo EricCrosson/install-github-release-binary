@@ -1,3 +1,10 @@
+## [2.4.32](https://github.com/EricCrosson/install-github-release-binary/compare/v2.4.31...v2.4.32) (2024-07-17)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @octokit/rest to v21.0.1 ([d7575d4](https://github.com/EricCrosson/install-github-release-binary/commit/d7575d482774a365b7a4b0b96dac3c27f57cd664))
+
 ## [2.4.31](https://github.com/EricCrosson/install-github-release-binary/compare/v2.4.30...v2.4.31) (2024-07-15)
 
 

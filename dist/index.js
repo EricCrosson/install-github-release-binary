@@ -10009,7 +10009,7 @@ var Octokit = class {
 };
 
 // node_modules/@octokit/plugin-request-log/dist-src/version.js
-var VERSION5 = "5.3.0";
+var VERSION5 = "5.3.1";
 
 // node_modules/@octokit/plugin-request-log/dist-src/index.js
 function requestLog(octokit) {
@@ -10025,7 +10025,8 @@ function requestLog(octokit) {
       );
       return response;
     }).catch((error3) => {
-      const requestId = error3.response.headers["x-github-request-id"] || "UNKNOWN";
+      var _a;
+      const requestId = ((_a = error3.response) == null ? void 0 : _a.headers["x-github-request-id"]) || "UNKNOWN";
       octokit.log.error(
         `${requestOptions.method} ${path2} - ${error3.status} with id ${requestId} in ${Date.now() - start}ms`
       );
@@ -10040,7 +10041,7 @@ var import_plugin_paginate_rest = __toESM(require_dist_node(), 1);
 var import_plugin_rest_endpoint_methods = __toESM(require_dist_node2(), 1);
 
 // node_modules/@octokit/rest/dist-src/version.js
-var VERSION6 = "21.0.0";
+var VERSION6 = "21.0.1";
 
 // node_modules/@octokit/rest/dist-src/index.js
 var Octokit2 = Octokit.plugin(requestLog, import_plugin_rest_endpoint_methods.legacyRestEndpointMethods, import_plugin_paginate_rest.paginateRest).defaults(
