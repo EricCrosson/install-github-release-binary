@@ -10041,7 +10041,7 @@ var import_plugin_paginate_rest = __toESM(require_dist_node(), 1);
 var import_plugin_rest_endpoint_methods = __toESM(require_dist_node2(), 1);
 
 // node_modules/@octokit/rest/dist-src/version.js
-var VERSION6 = "21.0.1";
+var VERSION6 = "21.0.2";
 
 // node_modules/@octokit/rest/dist-src/index.js
 var Octokit2 = Octokit.plugin(requestLog, import_plugin_rest_endpoint_methods.legacyRestEndpointMethods, import_plugin_paginate_rest.paginateRest).defaults(
