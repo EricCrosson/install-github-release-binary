@@ -1,3 +1,10 @@
+## [2.4.37](https://github.com/EricCrosson/install-github-release-binary/compare/v2.4.36...v2.4.37) (2024-10-05)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @actions/core to v1.11.1 ([238f481](https://github.com/EricCrosson/install-github-release-binary/commit/238f481953e5cb877cd879f0fbc1102e2374ddd4))
+
 ## [2.4.36](https://github.com/EricCrosson/install-github-release-binary/compare/v2.4.35...v2.4.36) (2024-10-03)
 
 

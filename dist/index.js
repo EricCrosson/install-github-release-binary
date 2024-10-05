@@ -176,6 +176,7 @@ var require_file_command = __commonJS({
     };
     Object.defineProperty(exports2, "__esModule", { value: true });
     exports2.prepareKeyValueMessage = exports2.issueFileCommand = void 0;
+    var crypto = __importStar(require("crypto"));
     var fs2 = __importStar(require("fs"));
     var os = __importStar(require("os"));
     var utils_1 = require_utils();
@@ -4306,9 +4307,9 @@ var require_manifest = __commonJS({
 // node_modules/@actions/tool-cache/node_modules/uuid/lib/rng.js
 var require_rng = __commonJS({
   "node_modules/@actions/tool-cache/node_modules/uuid/lib/rng.js"(exports2, module2) {
-    var crypto2 = require("crypto");
+    var crypto = require("crypto");
     module2.exports = function nodeRNG() {
-      return crypto2.randomBytes(16);
+      return crypto.randomBytes(16);
     };
   }
 });
