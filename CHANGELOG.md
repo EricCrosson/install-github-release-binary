@@ -1,3 +1,10 @@
+## [2.4.41](https://github.com/EricCrosson/install-github-release-binary/compare/v2.4.40...v2.4.41) (2025-01-09)
+
+
+### Bug Fixes
+
+* **deps:** update octokit monorepo ([feb4b4a](https://github.com/EricCrosson/install-github-release-binary/commit/feb4b4a3e2e92a67a2fed9eff07938dba45bb9b2))
+
 ## [2.4.40](https://github.com/EricCrosson/install-github-release-binary/compare/v2.4.39...v2.4.40) (2024-12-21)
 
 
