@@ -22,8 +22,8 @@
   "dependencies": {
     "@actions/core": "1.11.1",
     "@actions/tool-cache": "2.0.1",
-    "@octokit/plugin-throttling": "9.3.2",
-    "@octokit/rest": "21.0.2",
+    "@octokit/plugin-throttling": "9.4.0",
+    "@octokit/rest": "21.1.0",
     "esbuild": "0.24.2"
   },
   "devDependencies": {
