@@ -1,3 +1,10 @@
+## [2.4.42](https://github.com/EricCrosson/install-github-release-binary/compare/v2.4.41...v2.4.42) (2025-01-16)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @actions/tool-cache to v2.0.2 ([e1a607b](https://github.com/EricCrosson/install-github-release-binary/commit/e1a607b724f65a9d8dad5ac7ead8d211fed02887))
+
 ## [2.4.41](https://github.com/EricCrosson/install-github-release-binary/compare/v2.4.40...v2.4.41) (2025-01-09)
 
 
