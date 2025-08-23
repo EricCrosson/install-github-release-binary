@@ -5428,11 +5428,11 @@ var require_light = __commonJS({
           return this._onFailure(error3, eventInfo, clearGlobalState, run, free);
         }
         async _onFailure(error3, eventInfo, clearGlobalState, run, free) {
-          var retry, retryAfter;
+          var retry2, retryAfter;
           if (clearGlobalState()) {
-            retry = await this.Events.trigger("failed", error3, eventInfo);
-            if (retry != null) {
-              retryAfter = ~~retry;
+            retry2 = await this.Events.trigger("failed", error3, eventInfo);
+            if (retry2 != null) {
+              retryAfter = ~~retry2;
               this.Events.trigger("retry", `Retrying ${this.options.id} after ${retryAfter} ms`, eventInfo);
               this.retryCount++;
               return run(retryAfter);
@@ -5947,7 +5947,7 @@ var require_light = __commonJS({
       var Batcher_1 = Batcher;
       var require$$4$1 = () => console.log("You must import the full version of Bottleneck in order to use this feature.");
       var require$$8 = getCjsExportFromNamespace(version$2);
-      var Bottleneck, DEFAULT_PRIORITY$1, Events$4, Job$1, LocalDatastore$1, NUM_PRIORITIES$1, Queues$1, RedisDatastore$1, States$1, Sync$1, parser$5, splice = [].splice;
+      var Bottleneck2, DEFAULT_PRIORITY$1, Events$4, Job$1, LocalDatastore$1, NUM_PRIORITIES$1, Queues$1, RedisDatastore$1, States$1, Sync$1, parser$5, splice = [].splice;
       NUM_PRIORITIES$1 = 10;
       DEFAULT_PRIORITY$1 = 5;
       parser$5 = parser;
@@ -5958,8 +5958,8 @@ var require_light = __commonJS({
       Events$4 = Events_1;
       States$1 = States_1;
       Sync$1 = Sync_1;
-      Bottleneck = (function() {
-        class Bottleneck2 {
+      Bottleneck2 = (function() {
+        class Bottleneck3 {
           constructor(options = {}, ...invalid) {
             var storeInstanceOptions, storeOptions;
             this._addToQueue = this._addToQueue.bind(this);
@@ -5981,7 +5981,7 @@ var require_light = __commonJS({
                 storeInstanceOptions = parser$5.load(options, this.localStoreDefaults, {});
                 return new LocalDatastore$1(this, storeOptions, storeInstanceOptions);
               } else {
-                throw new Bottleneck2.prototype.BottleneckError(`Invalid datastore type: ${this.datastore}`);
+                throw new Bottleneck3.prototype.BottleneckError(`Invalid datastore type: ${this.datastore}`);
               }
             }).call(this);
             this._queues.on("leftzero", () => {
@@ -5995,7 +5995,7 @@ var require_light = __commonJS({
           }
           _validateOptions(options, invalid) {
             if (!(options != null && typeof options === "object" && invalid.length === 0)) {
-              throw new Bottleneck2.prototype.BottleneckError("Bottleneck v2 takes a single object argument. Refer to https://github.com/SGrondin/bottleneck#upgrading-to-v2 if you're upgrading from Bottleneck v1.");
+              throw new Bottleneck3.prototype.BottleneckError("Bottleneck v2 takes a single object argument. Refer to https://github.com/SGrondin/bottleneck#upgrading-to-v2 if you're upgrading from Bottleneck v1.");
             }
           }
           ready() {
@@ -6192,10 +6192,10 @@ var require_light = __commonJS({
               return waitForExecuting(1);
             });
             this._receive = function(job) {
-              return job._reject(new Bottleneck2.prototype.BottleneckError(options.enqueueErrorMessage));
+              return job._reject(new Bottleneck3.prototype.BottleneckError(options.enqueueErrorMessage));
             };
             this.stop = () => {
-              return this.Promise.reject(new Bottleneck2.prototype.BottleneckError("stop() has already been called"));
+              return this.Promise.reject(new Bottleneck3.prototype.BottleneckError("stop() has already been called"));
             };
             return done;
           }
@@ -6214,11 +6214,11 @@ var require_light = __commonJS({
               job.doDrop();
               return true;
             } else if (reachedHWM) {
-              shifted = strategy === Bottleneck2.prototype.strategy.LEAK ? this._queues.shiftLastFrom(options.priority) : strategy === Bottleneck2.prototype.strategy.OVERFLOW_PRIORITY ? this._queues.shiftLastFrom(options.priority + 1) : strategy === Bottleneck2.prototype.strategy.OVERFLOW ? job : void 0;
+              shifted = strategy === Bottleneck3.prototype.strategy.LEAK ? this._queues.shiftLastFrom(options.priority) : strategy === Bottleneck3.prototype.strategy.OVERFLOW_PRIORITY ? this._queues.shiftLastFrom(options.priority + 1) : strategy === Bottleneck3.prototype.strategy.OVERFLOW ? job : void 0;
               if (shifted != null) {
                 shifted.doDrop();
               }
-              if (shifted == null || strategy === Bottleneck2.prototype.strategy.OVERFLOW) {
+              if (shifted == null || strategy === Bottleneck3.prototype.strategy.OVERFLOW) {
                 if (shifted == null) {
                   job.doDrop();
                 }
@@ -6232,7 +6232,7 @@ var require_light = __commonJS({
           }
           _receive(job) {
             if (this._states.jobStatus(job.options.id) != null) {
-              job._reject(new Bottleneck2.prototype.BottleneckError(`A job with the same id already exists (id=${job.options.id})`));
+              job._reject(new Bottleneck3.prototype.BottleneckError(`A job with the same id already exists (id=${job.options.id})`));
               return false;
             } else {
               job.doReceive();
@@ -6302,31 +6302,31 @@ var require_light = __commonJS({
             return this._store.__incrementReservoir__(incr);
           }
         }
-        Bottleneck2.default = Bottleneck2;
-        Bottleneck2.Events = Events$4;
-        Bottleneck2.version = Bottleneck2.prototype.version = require$$8.version;
-        Bottleneck2.strategy = Bottleneck2.prototype.strategy = {
+        Bottleneck3.default = Bottleneck3;
+        Bottleneck3.Events = Events$4;
+        Bottleneck3.version = Bottleneck3.prototype.version = require$$8.version;
+        Bottleneck3.strategy = Bottleneck3.prototype.strategy = {
           LEAK: 1,
           OVERFLOW: 2,
           OVERFLOW_PRIORITY: 4,
           BLOCK: 3
         };
-        Bottleneck2.BottleneckError = Bottleneck2.prototype.BottleneckError = BottleneckError_1;
-        Bottleneck2.Group = Bottleneck2.prototype.Group = Group_1;
-        Bottleneck2.RedisConnection = Bottleneck2.prototype.RedisConnection = require$$2;
-        Bottleneck2.IORedisConnection = Bottleneck2.prototype.IORedisConnection = require$$3;
-        Bottleneck2.Batcher = Bottleneck2.prototype.Batcher = Batcher_1;
-        Bottleneck2.prototype.jobDefaults = {
+        Bottleneck3.BottleneckError = Bottleneck3.prototype.BottleneckError = BottleneckError_1;
+        Bottleneck3.Group = Bottleneck3.prototype.Group = Group_1;
+        Bottleneck3.RedisConnection = Bottleneck3.prototype.RedisConnection = require$$2;
+        Bottleneck3.IORedisConnection = Bottleneck3.prototype.IORedisConnection = require$$3;
+        Bottleneck3.Batcher = Bottleneck3.prototype.Batcher = Batcher_1;
+        Bottleneck3.prototype.jobDefaults = {
           priority: DEFAULT_PRIORITY$1,
           weight: 1,
           expiration: null,
           id: "<no-id>"
         };
-        Bottleneck2.prototype.storeDefaults = {
+        Bottleneck3.prototype.storeDefaults = {
           maxConcurrent: null,
           minTime: 0,
           highWater: null,
-          strategy: Bottleneck2.prototype.strategy.LEAK,
+          strategy: Bottleneck3.prototype.strategy.LEAK,
           penalty: null,
           reservoir: null,
           reservoirRefreshInterval: null,
@@ -6335,12 +6335,12 @@ var require_light = __commonJS({
           reservoirIncreaseAmount: null,
           reservoirIncreaseMaximum: null
         };
-        Bottleneck2.prototype.localStoreDefaults = {
+        Bottleneck3.prototype.localStoreDefaults = {
           Promise,
           timeout: null,
           heartbeatInterval: 250
         };
-        Bottleneck2.prototype.redisStoreDefaults = {
+        Bottleneck3.prototype.redisStoreDefaults = {
           Promise,
           timeout: null,
           heartbeatInterval: 5e3,
@@ -6351,7 +6351,7 @@ var require_light = __commonJS({
           clearDatastore: false,
           connection: null
         };
-        Bottleneck2.prototype.instanceDefaults = {
+        Bottleneck3.prototype.instanceDefaults = {
           datastore: "local",
           connection: null,
           id: "<no-id>",
@@ -6359,14 +6359,14 @@ var require_light = __commonJS({
           trackDoneStatus: false,
           Promise
         };
-        Bottleneck2.prototype.stopDefaults = {
+        Bottleneck3.prototype.stopDefaults = {
           enqueueErrorMessage: "This limiter has been stopped and cannot accept new jobs.",
           dropWaitingJobs: true,
           dropErrorMessage: "This limiter has been stopped."
         };
-        return Bottleneck2;
+        return Bottleneck3;
       }).call(commonjsGlobal);
-      var Bottleneck_1 = Bottleneck;
+      var Bottleneck_1 = Bottleneck2;
       var lib = Bottleneck_1;
       return lib;
     }));
@@ -9750,11 +9750,122 @@ var Octokit2 = Octokit.plugin(requestLog, legacyRestEndpointMethods, paginateRes
   }
 );
 
-// node_modules/@octokit/plugin-throttling/dist-bundle/index.js
+// node_modules/@octokit/plugin-retry/dist-bundle/index.js
 var import_light = __toESM(require_light(), 1);
+
+// node_modules/@octokit/plugin-retry/node_modules/@octokit/request-error/dist-src/index.js
+var RequestError2 = class extends Error {
+  name;
+  /**
+   * http status code
+   */
+  status;
+  /**
+   * Request options that lead to the error.
+   */
+  request;
+  /**
+   * Response object if a response was received
+   */
+  response;
+  constructor(message, statusCode, options) {
+    super(message);
+    this.name = "HttpError";
+    this.status = Number.parseInt(statusCode);
+    if (Number.isNaN(this.status)) {
+      this.status = 0;
+    }
+    if ("response" in options) {
+      this.response = options.response;
+    }
+    const requestCopy = Object.assign({}, options.request);
+    if (options.request.headers.authorization) {
+      requestCopy.headers = Object.assign({}, options.request.headers, {
+        authorization: options.request.headers.authorization.replace(
+          /(?<! ) .*$/,
+          " [REDACTED]"
+        )
+      });
+    }
+    requestCopy.url = requestCopy.url.replace(/\bclient_secret=\w+/g, "client_secret=[REDACTED]").replace(/\baccess_token=\w+/g, "access_token=[REDACTED]");
+    this.request = requestCopy;
+  }
+};
+
+// node_modules/@octokit/plugin-retry/dist-bundle/index.js
 var VERSION9 = "0.0.0-development";
+async function errorRequest(state, octokit, error3, options) {
+  if (!error3.request || !error3.request.request) {
+    throw error3;
+  }
+  if (error3.status >= 400 && !state.doNotRetry.includes(error3.status)) {
+    const retries = options.request.retries != null ? options.request.retries : state.retries;
+    const retryAfter = Math.pow((options.request.retryCount || 0) + 1, 2);
+    throw octokit.retry.retryRequest(error3, retries, retryAfter);
+  }
+  throw error3;
+}
+async function wrapRequest(state, octokit, request2, options) {
+  const limiter = new import_light.default();
+  limiter.on("failed", function(error3, info2) {
+    const maxRetries = ~~error3.request.request.retries;
+    const after = ~~error3.request.request.retryAfter;
+    options.request.retryCount = info2.retryCount + 1;
+    if (maxRetries > info2.retryCount) {
+      return after * state.retryAfterBaseValue;
+    }
+  });
+  return limiter.schedule(
+    requestWithGraphqlErrorHandling.bind(null, state, octokit, request2),
+    options
+  );
+}
+async function requestWithGraphqlErrorHandling(state, octokit, request2, options) {
+  const response = await request2(request2, options);
+  if (response.data && response.data.errors && response.data.errors.length > 0 && /Something went wrong while executing your query/.test(
+    response.data.errors[0].message
+  )) {
+    const error3 = new RequestError2(response.data.errors[0].message, 500, {
+      request: options,
+      response
+    });
+    return errorRequest(state, octokit, error3, options);
+  }
+  return response;
+}
+function retry(octokit, octokitOptions) {
+  const state = Object.assign(
+    {
+      enabled: true,
+      retryAfterBaseValue: 1e3,
+      doNotRetry: [400, 401, 403, 404, 410, 422, 451],
+      retries: 3
+    },
+    octokitOptions.retry
+  );
+  if (state.enabled) {
+    octokit.hook.error("request", errorRequest.bind(null, state, octokit));
+    octokit.hook.wrap("request", wrapRequest.bind(null, state, octokit));
+  }
+  return {
+    retry: {
+      retryRequest: (error3, retries, retryAfter) => {
+        error3.request.request = Object.assign({}, error3.request.request, {
+          retries,
+          retryAfter
+        });
+        return error3;
+      }
+    }
+  };
+}
+retry.VERSION = VERSION9;
+
+// node_modules/@octokit/plugin-throttling/dist-bundle/index.js
+var import_light2 = __toESM(require_light(), 1);
+var VERSION10 = "0.0.0-development";
 var noop2 = () => Promise.resolve();
-function wrapRequest(state, request2, options) {
+function wrapRequest2(state, request2, options) {
   return state.retryLimiter.schedule(doRequest, state, request2, options);
 }
 async function doRequest(state, request2, options) {
@@ -9828,30 +9939,30 @@ function routeMatcher(paths) {
 var regex = routeMatcher(triggers_notification_paths_default);
 var triggersNotification = regex.test.bind(regex);
 var groups = {};
-var createGroups = function(Bottleneck, common) {
-  groups.global = new Bottleneck.Group({
+var createGroups = function(Bottleneck2, common) {
+  groups.global = new Bottleneck2.Group({
     id: "octokit-global",
     maxConcurrent: 10,
     ...common
   });
-  groups.auth = new Bottleneck.Group({
+  groups.auth = new Bottleneck2.Group({
     id: "octokit-auth",
     maxConcurrent: 1,
     ...common
   });
-  groups.search = new Bottleneck.Group({
+  groups.search = new Bottleneck2.Group({
     id: "octokit-search",
     maxConcurrent: 1,
     minTime: 2e3,
     ...common
   });
-  groups.write = new Bottleneck.Group({
+  groups.write = new Bottleneck2.Group({
     id: "octokit-write",
     maxConcurrent: 1,
     minTime: 1e3,
     ...common
   });
-  groups.notifications = new Bottleneck.Group({
+  groups.notifications = new Bottleneck2.Group({
     id: "octokit-notifications",
     maxConcurrent: 1,
     minTime: 3e3,
@@ -9861,7 +9972,7 @@ var createGroups = function(Bottleneck, common) {
 function throttling(octokit, octokitOptions) {
   const {
     enabled = true,
-    Bottleneck = import_light.default,
+    Bottleneck: Bottleneck2 = import_light2.default,
     id = "no-id",
     timeout = 1e3 * 60 * 2,
     // Redis TTL: 2 minutes
@@ -9875,7 +9986,7 @@ function throttling(octokit, octokitOptions) {
     common.connection = connection;
   }
   if (groups.global == null) {
-    createGroups(Bottleneck, common);
+    createGroups(Bottleneck2, common);
   }
   const state = Object.assign(
     {
@@ -9883,7 +9994,7 @@ function throttling(octokit, octokitOptions) {
       triggersNotification,
       fallbackSecondaryRateRetryAfter: 60,
       retryAfterBaseValue: 1e3,
-      retryLimiter: new Bottleneck(),
+      retryLimiter: new Bottleneck2(),
       id,
       ...groups
     },
@@ -9903,7 +10014,7 @@ function throttling(octokit, octokitOptions) {
     `);
   }
   const events = {};
-  const emitter = new Bottleneck.Events(events);
+  const emitter = new Bottleneck2.Events(events);
   events.on("secondary-limit", state.onSecondaryRateLimit);
   events.on("rate-limit", state.onRateLimit);
   events.on(
@@ -9961,17 +10072,18 @@ function throttling(octokit, octokitOptions) {
       return retryAfter * state2.retryAfterBaseValue;
     }
   });
-  octokit.hook.wrap("request", wrapRequest.bind(null, state));
+  octokit.hook.wrap("request", wrapRequest2.bind(null, state));
   return {};
 }
-throttling.VERSION = VERSION9;
+throttling.VERSION = VERSION10;
 throttling.triggersNotification = triggersNotification;
 
 // src/octokit.ts
-var ThrottlingOctokit = Octokit2.plugin(throttling);
+var Octokit3 = Octokit2.plugin(retry).plugin(throttling);
 function getOctokit(token) {
-  return new ThrottlingOctokit({
+  return new Octokit3({
     auth: token,
+    request: { retries: 3 },
     throttle: {
       onRateLimit: (retryAfter, options) => {
         core.warning(
