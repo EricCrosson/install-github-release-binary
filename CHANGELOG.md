@@ -1,3 +1,10 @@
+# [2.5.0](https://github.com/EricCrosson/install-github-release-binary/compare/v2.4.57...v2.5.0) (2025-08-23)
+
+
+### Features
+
+* retry failed HTTP requests to GitHub ([76a35a1](https://github.com/EricCrosson/install-github-release-binary/commit/76a35a1857067253eacdadf27e74c1f0ad01b3db))
+
 ## [2.4.57](https://github.com/EricCrosson/install-github-release-binary/compare/v2.4.56...v2.4.57) (2025-08-23)
 
 
