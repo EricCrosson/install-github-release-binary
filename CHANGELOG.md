@@ -1,3 +1,10 @@
+## [2.5.5](https://github.com/EricCrosson/install-github-release-binary/compare/v2.5.4...v2.5.5) (2025-11-01)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @octokit/rest to v22.0.1 ([653deec](https://github.com/EricCrosson/install-github-release-binary/commit/653deec9add5c22d04a79829159302cdbcc3dd46))
+
 ## [2.5.4](https://github.com/EricCrosson/install-github-release-binary/compare/v2.5.3...v2.5.4) (2025-10-31)
 
 
