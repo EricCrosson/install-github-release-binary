@@ -7376,7 +7376,7 @@ function requestLog(octokit) {
 }
 requestLog.VERSION = VERSION5;
 
-// node_modules/@octokit/rest/node_modules/@octokit/plugin-paginate-rest/dist-bundle/index.js
+// node_modules/@octokit/plugin-paginate-rest/dist-bundle/index.js
 var VERSION6 = "0.0.0-development";
 function normalizePaginatedListResponse(response) {
   if (!response.data) {
