@@ -32,7 +32,7 @@
     "@semantic-release/exec": "7.1.0",
     "@semantic-release/git": "10.0.1",
     "@types/node": "24.10.0",
-    "semantic-release": "25.0.1",
+    "semantic-release": "25.0.2",
     "semantic-release-major-tag": "0.3.2",
     "tsx": "4.20.6",
     "typescript": "5.9.3"
