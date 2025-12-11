@@ -1,3 +1,11 @@
+## [2.5.7](https://github.com/EricCrosson/install-github-release-binary/compare/v2.5.6...v2.5.7) (2025-12-11)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @actions/core to v2 ([7d79ab6](https://github.com/EricCrosson/install-github-release-binary/commit/7d79ab6a03aba809ef06b17594498f6ef16a3d41))
+* **deps:** update dependency esbuild to v0.27.1 ([24645a8](https://github.com/EricCrosson/install-github-release-binary/commit/24645a83a4580553284b5b0b325931e0ecfb0853))
+
 ## [2.5.6](https://github.com/EricCrosson/install-github-release-binary/compare/v2.5.5...v2.5.6) (2025-11-02)
 
 
