@@ -28121,7 +28121,7 @@ var endpoint = withDefaults(null, DEFAULTS);
 // node_modules/@octokit/request/dist-bundle/index.js
 var import_fast_content_type_parse = __toESM(require_fast_content_type_parse(), 1);
 
-// node_modules/@octokit/request/node_modules/@octokit/request-error/dist-src/index.js
+// node_modules/@octokit/request-error/dist-src/index.js
 var RequestError = class extends Error {
   name;
   /**
@@ -28137,7 +28137,7 @@ var RequestError = class extends Error {
    */
   response;
   constructor(message, statusCode, options) {
-    super(message);
+    super(message, { cause: options.cause });
     this.name = "HttpError";
     this.status = Number.parseInt(statusCode);
     if (Number.isNaN(this.status)) {
@@ -31216,50 +31216,12 @@ var Octokit2 = Octokit.plugin(requestLog, legacyRestEndpointMethods, paginateRes
 
 // node_modules/@octokit/plugin-retry/dist-bundle/index.js
 var import_light = __toESM(require_light(), 1);
-
-// node_modules/@octokit/plugin-retry/node_modules/@octokit/request-error/dist-src/index.js
-var RequestError2 = class extends Error {
-  name;
-  /**
-   * http status code
-   */
-  status;
-  /**
-   * Request options that lead to the error.
-   */
-  request;
-  /**
-   * Response object if a response was received
-   */
-  response;
-  constructor(message, statusCode, options) {
-    super(message);
-    this.name = "HttpError";
-    this.status = Number.parseInt(statusCode);
-    if (Number.isNaN(this.status)) {
-      this.status = 0;
-    }
-    if ("response" in options) {
-      this.response = options.response;
-    }
-    const requestCopy = Object.assign({}, options.request);
-    if (options.request.headers.authorization) {
-      requestCopy.headers = Object.assign({}, options.request.headers, {
-        authorization: options.request.headers.authorization.replace(
-          /(?<! ) .*$/,
-          " [REDACTED]"
-        )
-      });
-    }
-    requestCopy.url = requestCopy.url.replace(/\bclient_secret=\w+/g, "client_secret=[REDACTED]").replace(/\baccess_token=\w+/g, "access_token=[REDACTED]");
-    this.request = requestCopy;
-  }
-};
-
-// node_modules/@octokit/plugin-retry/dist-bundle/index.js
 var VERSION9 = "0.0.0-development";
+function isRequestError(error3) {
+  return error3.request !== void 0;
+}
 async function errorRequest(state, octokit, error3, options) {
-  if (!error3.request || !error3.request.request) {
+  if (!isRequestError(error3) || !(error3 == null ? void 0 : error3.request.request)) {
     throw error3;
   }
   if (error3.status >= 400 && !state.doNotRetry.includes(error3.status)) {
@@ -31272,8 +31234,9 @@ async function errorRequest(state, octokit, error3, options) {
 async function wrapRequest(state, octokit, request2, options) {
   const limiter = new import_light.default();
   limiter.on("failed", function(error3, info2) {
-    const maxRetries = ~~error3.request.request.retries;
-    const after = ~~error3.request.request.retryAfter;
+    var _a, _b;
+    const maxRetries = ~~((_a = error3.request.request) == null ? void 0 : _a.retries);
+    const after = ~~((_b = error3.request.request) == null ? void 0 : _b.retryAfter);
     options.request.retryCount = info2.retryCount + 1;
     if (maxRetries > info2.retryCount) {
       return after * state.retryAfterBaseValue;
@@ -31285,11 +31248,11 @@ async function wrapRequest(state, octokit, request2, options) {
   );
 }
 async function requestWithGraphqlErrorHandling(state, octokit, request2, options) {
-  const response = await request2(request2, options);
+  const response = await request2(options);
   if (response.data && response.data.errors && response.data.errors.length > 0 && /Something went wrong while executing your query/.test(
     response.data.errors[0].message
   )) {
-    const error3 = new RequestError2(response.data.errors[0].message, 500, {
+    const error3 = new RequestError(response.data.errors[0].message, 500, {
       request: options,
       response
     });
@@ -31307,11 +31270,7 @@ function retry(octokit, octokitOptions) {
     },
     octokitOptions.retry
   );
-  if (state.enabled) {
-    octokit.hook.error("request", errorRequest.bind(null, state, octokit));
-    octokit.hook.wrap("request", wrapRequest.bind(null, state, octokit));
-  }
-  return {
+  const retryPlugin = {
     retry: {
       retryRequest: (error3, retries, retryAfter) => {
         error3.request.request = Object.assign({}, error3.request.request, {
@@ -31322,6 +31281,11 @@ function retry(octokit, octokitOptions) {
       }
     }
   };
+  if (state.enabled) {
+    octokit.hook.error("request", errorRequest.bind(null, state, retryPlugin));
+    octokit.hook.wrap("request", wrapRequest.bind(null, state, retryPlugin));
+  }
+  return retryPlugin;
 }
 retry.VERSION = VERSION9;
 
@@ -31949,4 +31913,7 @@ undici/lib/web/fetch/body.js:
 
 undici/lib/web/websocket/frame.js:
   (*! ws. MIT License. Einar Otto Stangvik <einaros@gmail.com> *)
+
+@octokit/request-error/dist-src/index.js:
+  (* v8 ignore else -- @preserve -- Bug with vitest coverage where it sees an else branch that doesn't exist *)
 */

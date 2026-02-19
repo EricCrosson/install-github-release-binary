@@ -1,3 +1,10 @@
+## [2.5.13](https://github.com/EricCrosson/install-github-release-binary/compare/v2.5.12...v2.5.13) (2026-02-19)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @octokit/plugin-retry to v8.1.0 ([a132d0b](https://github.com/EricCrosson/install-github-release-binary/commit/a132d0be69fa36e92b9e20ba301281352f09159a))
+
 ## [2.5.12](https://github.com/EricCrosson/install-github-release-binary/compare/v2.5.11...v2.5.12) (2026-02-06)
 
 
