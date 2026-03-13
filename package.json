@@ -25,7 +25,7 @@
     "@octokit/plugin-throttling": "11.0.3",
     "@octokit/rest": "22.0.1",
     "@octokit/plugin-retry": "8.1.0",
-    "esbuild": "0.27.3"
+    "esbuild": "0.27.4"
   },
   "devDependencies": {
     "@semantic-release/changelog": "6.0.3",
