@@ -1,3 +1,11 @@
+## [2.5.18](https://github.com/EricCrosson/install-github-release-binary/compare/v2.5.17...v2.5.18) (2026-04-21)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @actions/tool-cache to v4 ([27a343b](https://github.com/EricCrosson/install-github-release-binary/commit/27a343b4ebd053f1581f3219501abdda56103a95))
+* restore CI and refresh the action bundle ([36552ec](https://github.com/EricCrosson/install-github-release-binary/commit/36552ec3759a5a4e592dcfa98a67cdec964ced22))
+
 ## [2.5.17](https://github.com/EricCrosson/install-github-release-binary/compare/v2.5.16...v2.5.17) (2026-04-21)
 
 
