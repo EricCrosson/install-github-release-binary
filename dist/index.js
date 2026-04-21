@@ -5,9 +5,6 @@ var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
 var __getOwnPropNames = Object.getOwnPropertyNames;
 var __getProtoOf = Object.getPrototypeOf;
 var __hasOwnProp = Object.prototype.hasOwnProperty;
-var __typeError = (msg) => {
-  throw TypeError(msg);
-};
 var __commonJS = (cb, mod) => function __require() {
   return mod || (0, cb[__getOwnPropNames(cb)[0]])((mod = { exports: {} }).exports, mod), mod.exports;
 };
@@ -27,11 +24,6 @@ var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__ge
   isNodeMode || !mod || !mod.__esModule ? __defProp(target, "default", { value: mod, enumerable: true }) : target,
   mod
 ));
-var __accessCheck = (obj, member, msg) => member.has(obj) || __typeError("Cannot " + msg);
-var __privateIn = (member, obj) => Object(obj) !== obj ? __typeError('Cannot use the "in" operator on this value') : member.has(obj);
-var __privateGet = (obj, member, getter) => (__accessCheck(obj, member, "read from private field"), getter ? getter.call(obj) : member.get(obj));
-var __privateAdd = (obj, member, value) => member.has(obj) ? __typeError("Cannot add the same private member more than once") : member instanceof WeakSet ? member.add(obj) : member.set(obj, value);
-var __privateSet = (obj, member, value, setter) => (__accessCheck(obj, member, "write to private field"), setter ? setter.call(obj, value) : member.set(obj, value), value);
 
 // node_modules/tunnel/lib/tunnel.js
 var require_tunnel = __commonJS({
@@ -941,8 +933,7 @@ var require_tree = __commonJS({
        * @return {any}
        */
       lookup(key) {
-        var _a, _b;
-        return ((_b = (_a = this.node) == null ? void 0 : _a.search(key)) == null ? void 0 : _b.value) ?? null;
+        return this.node?.search(key)?.value ?? null;
       }
     };
     var tree = new TernarySearchTree();
@@ -1138,8 +1129,7 @@ var require_util = __commonJS({
       return null;
     }
     function isDestroyed(body) {
-      var _a;
-      return body && !!(body.destroyed || body[kDestroyed] || ((_a = stream.isDestroyed) == null ? void 0 : _a.call(stream, body)));
+      return body && !!(body.destroyed || body[kDestroyed] || stream.isDestroyed?.(body));
     }
     function destroy(stream2, err) {
       if (stream2 == null || !isStream(stream2) || isDestroyed(stream2)) {
@@ -1286,9 +1276,8 @@ var require_util = __commonJS({
             const { done, value } = await iterator2.next();
             if (done) {
               queueMicrotask(() => {
-                var _a;
                 controller.close();
-                (_a = controller.byobRequest) == null ? void 0 : _a.respond(0);
+                controller.byobRequest?.respond(0);
               });
             } else {
               const buf = Buffer.isBuffer(value) ? value : Buffer.from(value);
@@ -1837,8 +1826,7 @@ var require_request = __commonJS({
         }
       }
       onResponseStarted() {
-        var _a, _b;
-        return (_b = (_a = this[kHandler]).onResponseStarted) == null ? void 0 : _b.call(_a);
+        return this[kHandler].onResponseStarted?.();
       }
       onHeaders(statusCode, headers, resume, statusText) {
         assert(!this.aborted);
@@ -3605,14 +3593,14 @@ var require_webidl = __commonJS({
       });
     };
     webidl.brandCheck = function(V, I, opts) {
-      if ((opts == null ? void 0 : opts.strict) !== false) {
+      if (opts?.strict !== false) {
         if (!(V instanceof I)) {
           const err = new TypeError("Illegal invocation");
           err.code = "ERR_INVALID_THIS";
           throw err;
         }
       } else {
-        if ((V == null ? void 0 : V[Symbol.toStringTag]) !== I.prototype[Symbol.toStringTag]) {
+        if (V?.[Symbol.toStringTag] !== I.prototype[Symbol.toStringTag]) {
           const err = new TypeError("Illegal invocation");
           err.code = "ERR_INVALID_THIS";
           throw err;
@@ -3679,7 +3667,7 @@ var require_webidl = __commonJS({
       if (x === 0) {
         x = 0;
       }
-      if ((opts == null ? void 0 : opts.enforceRange) === true) {
+      if (opts?.enforceRange === true) {
         if (Number.isNaN(x) || x === Number.POSITIVE_INFINITY || x === Number.NEGATIVE_INFINITY) {
           throw webidl.errors.exception({
             header: "Integer conversion",
@@ -3695,7 +3683,7 @@ var require_webidl = __commonJS({
         }
         return x;
       }
-      if (!Number.isNaN(x) && (opts == null ? void 0 : opts.clamp) === true) {
+      if (!Number.isNaN(x) && opts?.clamp === true) {
         x = Math.min(Math.max(x, lowerBound), upperBound);
         if (Math.floor(x) % 2 === 0) {
           x = Math.floor(x);
@@ -3736,14 +3724,13 @@ var require_webidl = __commonJS({
     };
     webidl.sequenceConverter = function(converter) {
       return (V, prefix, argument, Iterable) => {
-        var _a;
         if (webidl.util.Type(V) !== "Object") {
           throw webidl.errors.exception({
             header: prefix,
             message: `${argument} (${webidl.util.Stringify(V)}) is not iterable.`
           });
         }
-        const method = typeof Iterable === "function" ? Iterable() : (_a = V == null ? void 0 : V[Symbol.iterator]) == null ? void 0 : _a.call(V);
+        const method = typeof Iterable === "function" ? Iterable() : V?.[Symbol.iterator]?.();
         const seq = [];
         let index = 0;
         if (method === void 0 || typeof method.next !== "function") {
@@ -3783,7 +3770,7 @@ var require_webidl = __commonJS({
         const keys = Reflect.ownKeys(O);
         for (const key of keys) {
           const desc = Reflect.getOwnPropertyDescriptor(O, key);
-          if (desc == null ? void 0 : desc.enumerable) {
+          if (desc?.enumerable) {
             const typedKey = keyConverter(key, prefix, argument);
             const typedValue = valueConverter(O[key], prefix, argument);
             result[typedKey] = typedValue;
@@ -3794,7 +3781,7 @@ var require_webidl = __commonJS({
     };
     webidl.interfaceConverter = function(i) {
       return (V, prefix, argument, opts) => {
-        if ((opts == null ? void 0 : opts.strict) !== false && !(V instanceof i)) {
+        if (opts?.strict !== false && !(V instanceof i)) {
           throw webidl.errors.exception({
             header: prefix,
             message: `Expected ${argument} ("${webidl.util.Stringify(V)}") to be an instance of ${i.name}.`
@@ -3853,7 +3840,7 @@ var require_webidl = __commonJS({
       };
     };
     webidl.converters.DOMString = function(V, prefix, argument, opts) {
-      if (V === null && (opts == null ? void 0 : opts.legacyNullToEmptyString)) {
+      if (V === null && opts?.legacyNullToEmptyString) {
         return "";
       }
       if (typeof V === "symbol") {
@@ -3907,7 +3894,7 @@ var require_webidl = __commonJS({
           types: ["ArrayBuffer"]
         });
       }
-      if ((opts == null ? void 0 : opts.allowShared) === false && types.isSharedArrayBuffer(V)) {
+      if (opts?.allowShared === false && types.isSharedArrayBuffer(V)) {
         throw webidl.errors.exception({
           header: "ArrayBuffer",
           message: "SharedArrayBuffer is not allowed."
@@ -3929,7 +3916,7 @@ var require_webidl = __commonJS({
           types: [T.name]
         });
       }
-      if ((opts == null ? void 0 : opts.allowShared) === false && types.isSharedArrayBuffer(V.buffer)) {
+      if (opts?.allowShared === false && types.isSharedArrayBuffer(V.buffer)) {
         throw webidl.errors.exception({
           header: "ArrayBuffer",
           message: "SharedArrayBuffer is not allowed."
@@ -3950,7 +3937,7 @@ var require_webidl = __commonJS({
           message: `${name} is not a DataView.`
         });
       }
-      if ((opts == null ? void 0 : opts.allowShared) === false && types.isSharedArrayBuffer(V.buffer)) {
+      if (opts?.allowShared === false && types.isSharedArrayBuffer(V.buffer)) {
         throw webidl.errors.exception({
           header: "ArrayBuffer",
           message: "SharedArrayBuffer is not allowed."
@@ -4063,8 +4050,7 @@ var require_util2 = __commonJS({
       return "allowed";
     }
     function isErrorLike(object) {
-      var _a, _b;
-      return object instanceof Error || (((_a = object == null ? void 0 : object.constructor) == null ? void 0 : _a.name) === "Error" || ((_b = object == null ? void 0 : object.constructor) == null ? void 0 : _b.name) === "DOMException");
+      return object instanceof Error || (object?.constructor?.name === "Error" || object?.constructor?.name === "DOMException");
     }
     function isValidReasonPhrase(statusText) {
       for (let i = 0; i < statusText.length; ++i) {
@@ -4145,14 +4131,14 @@ var require_util2 = __commonJS({
       return timestamp;
     }
     function clampAndCoarsenConnectionTimingInfo(connectionTimingInfo, defaultStartTime, crossOriginIsolatedCapability) {
-      if (!(connectionTimingInfo == null ? void 0 : connectionTimingInfo.startTime) || connectionTimingInfo.startTime < defaultStartTime) {
+      if (!connectionTimingInfo?.startTime || connectionTimingInfo.startTime < defaultStartTime) {
         return {
           domainLookupStartTime: defaultStartTime,
           domainLookupEndTime: defaultStartTime,
           connectionStartTime: defaultStartTime,
           connectionEndTime: defaultStartTime,
           secureConnectionStartTime: defaultStartTime,
-          ALPNNegotiatedProtocol: connectionTimingInfo == null ? void 0 : connectionTimingInfo.ALPNNegotiatedProtocol
+          ALPNNegotiatedProtocol: connectionTimingInfo?.ALPNNegotiatedProtocol
         };
       }
       return {
@@ -4422,34 +4408,31 @@ var require_util2 = __commonJS({
     }
     var esIteratorPrototype = Object.getPrototypeOf(Object.getPrototypeOf([][Symbol.iterator]()));
     function createIterator(name, kInternalIterator, keyIndex = 0, valueIndex = 1) {
-      var _target;
       class FastIterableIterator {
+        /** @type {any} */
+        #target;
+        /** @type {'key' | 'value' | 'key+value'} */
+        #kind;
+        /** @type {number} */
+        #index;
         /**
          * @see https://webidl.spec.whatwg.org/#dfn-default-iterator-object
          * @param {unknown} target
          * @param {'key' | 'value' | 'key+value'} kind
          */
         constructor(target, kind) {
-          /** @type {any} */
-          __privateAdd(this, _target);
-          /** @type {'key' | 'value' | 'key+value'} */
-          this.#kind = void 0;
-          /** @type {number} */
-          this.#index = void 0;
-          __privateSet(this, _target, target);
+          this.#target = target;
           this.#kind = kind;
           this.#index = 0;
         }
-        #kind;
-        #index;
         next() {
-          if (typeof this !== "object" || this === null || !__privateIn(_target, this)) {
+          if (typeof this !== "object" || this === null || !(#target in this)) {
             throw new TypeError(
               `'next' called on an object that does not implement interface ${name} Iterator.`
             );
           }
           const index = this.#index;
-          const values = __privateGet(this, _target)[kInternalIterator];
+          const values = this.#target[kInternalIterator];
           const len = values.length;
           if (index >= len) {
             return {
@@ -4477,7 +4460,6 @@ var require_util2 = __commonJS({
           };
         }
       }
-      _target = new WeakMap();
       delete FastIterableIterator.prototype.constructor;
       Object.setPrototypeOf(FastIterableIterator.prototype, esIteratorPrototype);
       Object.defineProperties(FastIterableIterator.prototype, {
@@ -4571,10 +4553,9 @@ var require_util2 = __commonJS({
       return stream instanceof ReadableStream || stream[Symbol.toStringTag] === "ReadableStream" && typeof stream.tee === "function";
     }
     function readableStreamClose(controller) {
-      var _a;
       try {
         controller.close();
-        (_a = controller.byobRequest) == null ? void 0 : _a.respond(0);
+        controller.byobRequest?.respond(0);
       } catch (err) {
         if (!err.message.includes("Controller is already closed") && !err.message.includes("ReadableStream is already closed")) {
           throw err;
@@ -4808,8 +4789,7 @@ var require_util2 = __commonJS({
         return getGlobalOrigin();
       }
       get origin() {
-        var _a;
-        return (_a = this.baseUrl) == null ? void 0 : _a.origin;
+        return this.baseUrl?.origin;
       }
       policyContainer = makePolicyContainer();
     };
@@ -5506,9 +5486,8 @@ Content-Type: ${value.type || "application/octet-stream"}\r
             const { value, done } = await iterator2.next();
             if (done) {
               queueMicrotask(() => {
-                var _a;
                 controller.close();
-                (_a = controller.byobRequest) == null ? void 0 : _a.respond(0);
+                controller.byobRequest?.respond(0);
               });
             } else {
               if (!isErrored(stream)) {
@@ -6833,7 +6812,7 @@ var require_client_h2 = __commonJS({
     }
     function resumeH2(client) {
       const socket = client[kSocket];
-      if ((socket == null ? void 0 : socket.destroyed) === false) {
+      if (socket?.destroyed === false) {
         if (client[kSize] === 0 && client[kMaxConcurrentStreams] === 0) {
           socket.unref();
           client[kHTTP2Session].unref();
@@ -7016,8 +6995,7 @@ var require_client_h2 = __commonJS({
         });
       });
       stream.once("end", () => {
-        var _a;
-        if (((_a = stream.state) == null ? void 0 : _a.state) == null || stream.state.state < 6) {
+        if (stream.state?.state == null || stream.state.state < 6) {
           request2.onComplete([]);
         }
         if (session[kOpenStreams] === 0) {
@@ -7472,8 +7450,7 @@ var require_client = __commonJS({
     var noop3 = () => {
     };
     function getPipelining(client) {
-      var _a;
-      return client[kPipelining] ?? ((_a = client[kHTTPContext]) == null ? void 0 : _a.defaultPipelining) ?? 1;
+      return client[kPipelining] ?? client[kHTTPContext]?.defaultPipelining ?? 1;
     }
     var Client = class extends DispatcherBase {
       /**
@@ -7586,7 +7563,7 @@ var require_client = __commonJS({
             ...connect2
           });
         }
-        if ((interceptors == null ? void 0 : interceptors.Client) && Array.isArray(interceptors.Client)) {
+        if (interceptors?.Client && Array.isArray(interceptors.Client)) {
           this[kInterceptors] = interceptors.Client;
           if (!deprecatedInterceptorWarned) {
             deprecatedInterceptorWarned = true;
@@ -7646,9 +7623,8 @@ var require_client = __commonJS({
         return !!this[kHTTPContext] && !this[kConnecting] && !this[kHTTPContext].destroyed;
       }
       get [kBusy]() {
-        var _a;
         return Boolean(
-          ((_a = this[kHTTPContext]) == null ? void 0 : _a.busy(null)) || this[kSize] >= (getPipelining(this) || 1) || this[kPending] > 0
+          this[kHTTPContext]?.busy(null) || this[kSize] >= (getPipelining(this) || 1) || this[kPending] > 0
         );
       }
       /* istanbul ignore: only used for test */
@@ -7718,7 +7694,6 @@ var require_client = __commonJS({
       }
     }
     async function connect(client) {
-      var _a, _b, _c;
       assert(!client[kConnecting]);
       assert(!client[kHTTPContext]);
       let { host, hostname, protocol, port } = client[kUrl];
@@ -7737,7 +7712,7 @@ var require_client = __commonJS({
             hostname,
             protocol,
             port,
-            version: (_a = client[kHTTPContext]) == null ? void 0 : _a.version,
+            version: client[kHTTPContext]?.version,
             servername: client[kServerName],
             localAddress: client[kLocalAddress]
           },
@@ -7784,7 +7759,7 @@ var require_client = __commonJS({
               hostname,
               protocol,
               port,
-              version: (_b = client[kHTTPContext]) == null ? void 0 : _b.version,
+              version: client[kHTTPContext]?.version,
               servername: client[kServerName],
               localAddress: client[kLocalAddress]
             },
@@ -7805,7 +7780,7 @@ var require_client = __commonJS({
               hostname,
               protocol,
               port,
-              version: (_c = client[kHTTPContext]) == null ? void 0 : _c.version,
+              version: client[kHTTPContext]?.version,
               servername: client[kServerName],
               localAddress: client[kLocalAddress]
             },
@@ -7844,7 +7819,6 @@ var require_client = __commonJS({
       }
     }
     function _resume(client, sync) {
-      var _a;
       while (true) {
         if (client.destroyed) {
           assert(client[kPending] === 0);
@@ -7881,7 +7855,7 @@ var require_client = __commonJS({
             return;
           }
           client[kServerName] = request2.servername;
-          (_a = client[kHTTPContext]) == null ? void 0 : _a.destroy(new InformationalError("servername changed"), () => {
+          client[kHTTPContext]?.destroy(new InformationalError("servername changed"), () => {
             client[kHTTPContext] = null;
             resume(client);
           });
@@ -8192,7 +8166,6 @@ var require_pool = __commonJS({
         allowH2,
         ...options
       } = {}) {
-        var _a;
         super();
         if (connections != null && (!Number.isFinite(connections) || connections < 0)) {
           throw new InvalidArgumentError("invalid connections");
@@ -8214,7 +8187,7 @@ var require_pool = __commonJS({
             ...connect
           });
         }
-        this[kInterceptors] = ((_a = options.interceptors) == null ? void 0 : _a.Pool) && Array.isArray(options.interceptors.Pool) ? options.interceptors.Pool : [];
+        this[kInterceptors] = options.interceptors?.Pool && Array.isArray(options.interceptors.Pool) ? options.interceptors.Pool : [];
         this[kConnections] = connections || null;
         this[kUrl] = util.parseOrigin(origin);
         this[kOptions] = { ...util.deepClone(options), connect, allowH2 };
@@ -8287,7 +8260,6 @@ var require_balanced_pool = __commonJS({
     }
     var BalancedPool = class extends PoolBase {
       constructor(upstreams = [], { factory = defaultFactory, ...opts } = {}) {
-        var _a;
         super();
         this[kOptions] = opts;
         this[kIndex] = -1;
@@ -8300,7 +8272,7 @@ var require_balanced_pool = __commonJS({
         if (typeof factory !== "function") {
           throw new InvalidArgumentError("factory must be a function.");
         }
-        this[kInterceptors] = ((_a = opts.interceptors) == null ? void 0 : _a.BalancedPool) && Array.isArray(opts.interceptors.BalancedPool) ? opts.interceptors.BalancedPool : [];
+        this[kInterceptors] = opts.interceptors?.BalancedPool && Array.isArray(opts.interceptors.BalancedPool) ? opts.interceptors.BalancedPool : [];
         this[kFactory] = factory;
         for (const upstream of upstreams) {
           this.addUpstream(upstream);
@@ -8414,7 +8386,6 @@ var require_agent = __commonJS({
     }
     var Agent = class extends DispatcherBase {
       constructor({ factory = defaultFactory, maxRedirections = 0, connect, ...options } = {}) {
-        var _a;
         super();
         if (typeof factory !== "function") {
           throw new InvalidArgumentError("factory must be a function.");
@@ -8428,7 +8399,7 @@ var require_agent = __commonJS({
         if (connect && typeof connect !== "function") {
           connect = { ...connect };
         }
-        this[kInterceptors] = ((_a = options.interceptors) == null ? void 0 : _a.Agent) && Array.isArray(options.interceptors.Agent) ? options.interceptors.Agent : [createRedirectInterceptor({ maxRedirections })];
+        this[kInterceptors] = options.interceptors?.Agent && Array.isArray(options.interceptors.Agent) ? options.interceptors.Agent : [createRedirectInterceptor({ maxRedirections })];
         this[kOptions] = { ...util.deepClone(options), connect };
         this[kOptions].interceptors = options.interceptors ? { ...options.interceptors } : void 0;
         this[kMaxRedirections] = maxRedirections;
@@ -8569,7 +8540,6 @@ var require_proxy_agent = __commonJS({
     };
     var ProxyAgent2 = class extends DispatcherBase {
       constructor(opts) {
-        var _a;
         super();
         if (!opts || typeof opts === "object" && !(opts instanceof URL2) && !opts.uri) {
           throw new InvalidArgumentError("Proxy uri is mandatory");
@@ -8582,7 +8552,7 @@ var require_proxy_agent = __commonJS({
         const url = this.#getUrl(opts);
         const { href, origin, port, protocol, username, password, hostname: proxyHostname } = url;
         this[kProxy] = { uri: href, protocol };
-        this[kInterceptors] = ((_a = opts.interceptors) == null ? void 0 : _a.ProxyAgent) && Array.isArray(opts.interceptors.ProxyAgent) ? opts.interceptors.ProxyAgent : [];
+        this[kInterceptors] = opts.interceptors?.ProxyAgent && Array.isArray(opts.interceptors.ProxyAgent) ? opts.interceptors.ProxyAgent : [];
         this[kRequestTls] = opts.requestTls;
         this[kProxyTls] = opts.proxyTls;
         this[kProxyHeaders] = opts.headers || {};
@@ -8615,7 +8585,6 @@ var require_proxy_agent = __commonJS({
           ...opts,
           factory,
           connect: async (opts2, callback) => {
-            var _a2;
             let requestedPath = opts2.host;
             if (!opts2.port) {
               requestedPath += `:${defaultProtocolPort(opts2.protocol)}`;
@@ -8630,7 +8599,7 @@ var require_proxy_agent = __commonJS({
                   ...this[kProxyHeaders],
                   host: opts2.host
                 },
-                servername: ((_a2 = this[kProxyTls]) == null ? void 0 : _a2.servername) || proxyHostname
+                servername: this[kProxyTls]?.servername || proxyHostname
               });
               if (statusCode !== 200) {
                 socket.on("error", noop3).destroy();
@@ -8978,7 +8947,7 @@ var require_retry_handler = __commonJS({
           cb(err);
           return;
         }
-        let retryAfterHeader = headers == null ? void 0 : headers["retry-after"];
+        let retryAfterHeader = headers?.["retry-after"];
         if (retryAfterHeader) {
           retryAfterHeader = Number(retryAfterHeader);
           retryAfterHeader = Number.isNaN(retryAfterHeader) ? calculateRetryAfterHeader(retryAfterHeader) : retryAfterHeader * 1e3;
@@ -9306,12 +9275,12 @@ var require_readable = __commonJS({
         return this[kBody];
       }
       async dump(opts) {
-        let limit = Number.isFinite(opts == null ? void 0 : opts.limit) ? opts.limit : 128 * 1024;
-        const signal = opts == null ? void 0 : opts.signal;
+        let limit = Number.isFinite(opts?.limit) ? opts.limit : 128 * 1024;
+        const signal = opts?.signal;
         if (signal != null && (typeof signal !== "object" || !("aborted" in signal))) {
           throw new InvalidArgumentError("signal must be an AbortSignal");
         }
-        signal == null ? void 0 : signal.throwIfAborted();
+        signal?.throwIfAborted();
         if (this._readableState.closeEmitted) {
           return null;
         }
@@ -9322,10 +9291,10 @@ var require_readable = __commonJS({
           const onAbort = () => {
             this.destroy(signal.reason ?? new AbortError());
           };
-          signal == null ? void 0 : signal.addEventListener("abort", onAbort);
+          signal?.addEventListener("abort", onAbort);
           this.on("close", function() {
-            signal == null ? void 0 : signal.removeEventListener("abort", onAbort);
-            if (signal == null ? void 0 : signal.aborted) {
+            signal?.removeEventListener("abort", onAbort);
+            if (signal?.aborted) {
               reject(signal.reason ?? new AbortError());
             } else {
               resolve(null);
@@ -9601,7 +9570,6 @@ var require_api_request = __commonJS({
             this.reason = this.signal.reason ?? new RequestAbortedError();
           } else {
             this.removeAbortListener = util.addAbortListener(this.signal, () => {
-              var _a;
               this.reason = this.signal.reason ?? new RequestAbortedError();
               if (this.res) {
                 util.destroy(this.res.on("error", util.nop), this.reason);
@@ -9609,7 +9577,7 @@ var require_api_request = __commonJS({
                 this.abort(this.reason);
               }
               if (this.removeAbortListener) {
-                (_a = this.res) == null ? void 0 : _a.off("close", this.removeAbortListener);
+                this.res?.off("close", this.removeAbortListener);
                 this.removeAbortListener();
                 this.removeAbortListener = null;
               }
@@ -9695,7 +9663,7 @@ var require_api_request = __commonJS({
           util.destroy(body, err);
         }
         if (this.removeAbortListener) {
-          res == null ? void 0 : res.off("close", this.removeAbortListener);
+          res?.off("close", this.removeAbortListener);
           this.removeAbortListener();
           this.removeAbortListener = null;
         }
@@ -9715,7 +9683,7 @@ var require_api_request = __commonJS({
         if (typeof callback !== "function") {
           throw err;
         }
-        const opaque = opts == null ? void 0 : opts.opaque;
+        const opaque = opts?.opaque;
         queueMicrotask(() => callback(err, { opaque }));
       }
     }
@@ -9732,11 +9700,10 @@ var require_abort_signal = __commonJS({
     var kListener = /* @__PURE__ */ Symbol("kListener");
     var kSignal = /* @__PURE__ */ Symbol("kSignal");
     function abort(self2) {
-      var _a, _b;
       if (self2.abort) {
-        self2.abort((_a = self2[kSignal]) == null ? void 0 : _a.reason);
+        self2.abort(self2[kSignal]?.reason);
       } else {
-        self2.reason = ((_b = self2[kSignal]) == null ? void 0 : _b.reason) ?? new RequestAbortedError();
+        self2.reason = self2[kSignal]?.reason ?? new RequestAbortedError();
       }
       removeSignal(self2);
     }
@@ -9844,7 +9811,6 @@ var require_api_stream = __commonJS({
         this.context = context;
       }
       onHeaders(statusCode, rawHeaders, resume, statusMessage) {
-        var _a;
         const { factory, opaque, context, callback, responseHeaders } = this;
         const headers = responseHeaders === "raw" ? util.parseRawHeaders(rawHeaders) : util.parseHeaders(rawHeaders);
         if (statusCode < 200) {
@@ -9893,7 +9859,7 @@ var require_api_stream = __commonJS({
         }
         res.on("drain", resume);
         this.res = res;
-        const needDrain = res.writableNeedDrain !== void 0 ? res.writableNeedDrain : (_a = res._writableState) == null ? void 0 : _a.needDrain;
+        const needDrain = res.writableNeedDrain !== void 0 ? res.writableNeedDrain : res._writableState?.needDrain;
         return needDrain !== true;
       }
       onData(chunk) {
@@ -9942,7 +9908,7 @@ var require_api_stream = __commonJS({
         if (typeof callback !== "function") {
           throw err;
         }
-        const opaque = opts == null ? void 0 : opts.opaque;
+        const opaque = opts?.opaque;
         queueMicrotask(() => callback(err, { opaque }));
       }
     }
@@ -10032,7 +9998,7 @@ var require_api_pipeline = __commonJS({
           autoDestroy: true,
           read: () => {
             const { body } = this;
-            if (body == null ? void 0 : body.resume) {
+            if (body?.resume) {
               body.resume();
             }
           },
@@ -10234,7 +10200,7 @@ var require_api_upgrade = __commonJS({
         if (typeof callback !== "function") {
           throw err;
         }
-        const opaque = opts == null ? void 0 : opts.opaque;
+        const opaque = opts?.opaque;
         queueMicrotask(() => callback(err, { opaque }));
       }
     }
@@ -10324,7 +10290,7 @@ var require_api_connect = __commonJS({
         if (typeof callback !== "function") {
           throw err;
         }
-        const opaque = opts == null ? void 0 : opts.opaque;
+        const opaque = opts?.opaque;
         queueMicrotask(() => callback(err, { opaque }));
       }
     }
@@ -10611,7 +10577,6 @@ var require_mock_utils = __commonJS({
         handleReply(this[kDispatches]);
       }
       function handleReply(mockDispatches, _data = data) {
-        var _a, _b, _c, _d;
         const optsHeaders = Array.isArray(opts.headers) ? buildHeadersFromArray(opts.headers) : opts.headers;
         const body = typeof _data === "function" ? _data({ ...opts, headers: optsHeaders }) : _data;
         if (isPromise(body)) {
@@ -10621,10 +10586,10 @@ var require_mock_utils = __commonJS({
         const responseData = getResponseData2(body);
         const responseHeaders = generateKeyValues(headers);
         const responseTrailers = generateKeyValues(trailers);
-        (_a = handler2.onConnect) == null ? void 0 : _a.call(handler2, (err) => handler2.onError(err), null);
-        (_b = handler2.onHeaders) == null ? void 0 : _b.call(handler2, statusCode, responseHeaders, resume, getStatusText(statusCode));
-        (_c = handler2.onData) == null ? void 0 : _c.call(handler2, Buffer.from(responseData));
-        (_d = handler2.onComplete) == null ? void 0 : _d.call(handler2, responseTrailers);
+        handler2.onConnect?.((err) => handler2.onError(err), null);
+        handler2.onHeaders?.(statusCode, responseHeaders, resume, getStatusText(statusCode));
+        handler2.onData?.(Buffer.from(responseData));
+        handler2.onComplete?.(responseTrailers);
         deleteMockDispatch(mockDispatches, key);
       }
       function resume() {
@@ -11063,10 +11028,10 @@ var require_mock_agent = __commonJS({
         super(opts);
         this[kNetConnect] = true;
         this[kIsMockActive] = true;
-        if ((opts == null ? void 0 : opts.agent) && typeof opts.agent.dispatch !== "function") {
+        if (opts?.agent && typeof opts.agent.dispatch !== "function") {
           throw new InvalidArgumentError("Argument opts.agent must implement Agent");
         }
-        const agent = (opts == null ? void 0 : opts.agent) ? opts.agent : new Agent(opts);
+        const agent = opts?.agent ? opts.agent : new Agent(opts);
         this[kAgent] = agent;
         this[kClients] = agent[kClients];
         this[kOptions] = buildMockOptions(opts);
@@ -11208,36 +11173,28 @@ var require_decorator_handler = __commonJS({
         this.#handler = handler2;
       }
       onConnect(...args) {
-        var _a, _b;
-        return (_b = (_a = this.#handler).onConnect) == null ? void 0 : _b.call(_a, ...args);
+        return this.#handler.onConnect?.(...args);
       }
       onError(...args) {
-        var _a, _b;
-        return (_b = (_a = this.#handler).onError) == null ? void 0 : _b.call(_a, ...args);
+        return this.#handler.onError?.(...args);
       }
       onUpgrade(...args) {
-        var _a, _b;
-        return (_b = (_a = this.#handler).onUpgrade) == null ? void 0 : _b.call(_a, ...args);
+        return this.#handler.onUpgrade?.(...args);
       }
       onResponseStarted(...args) {
-        var _a, _b;
-        return (_b = (_a = this.#handler).onResponseStarted) == null ? void 0 : _b.call(_a, ...args);
+        return this.#handler.onResponseStarted?.(...args);
       }
       onHeaders(...args) {
-        var _a, _b;
-        return (_b = (_a = this.#handler).onHeaders) == null ? void 0 : _b.call(_a, ...args);
+        return this.#handler.onHeaders?.(...args);
       }
       onData(...args) {
-        var _a, _b;
-        return (_b = (_a = this.#handler).onData) == null ? void 0 : _b.call(_a, ...args);
+        return this.#handler.onData?.(...args);
       }
       onComplete(...args) {
-        var _a, _b;
-        return (_b = (_a = this.#handler).onComplete) == null ? void 0 : _b.call(_a, ...args);
+        return this.#handler.onComplete?.(...args);
       }
       onBodySent(...args) {
-        var _a, _b;
-        return (_b = (_a = this.#handler).onBodySent) == null ? void 0 : _b.call(_a, ...args);
+        return this.#handler.onBodySent?.(...args);
       }
     };
   }
@@ -11249,7 +11206,7 @@ var require_redirect = __commonJS({
     "use strict";
     var RedirectHandler = require_redirect_handler();
     module2.exports = (opts) => {
-      const globalMaxRedirections = opts == null ? void 0 : opts.maxRedirections;
+      const globalMaxRedirections = opts?.maxRedirections;
       return (dispatch) => {
         return function redirectInterceptor(opts2, handler2) {
           const { maxRedirections = globalMaxRedirections, ...baseOpts } = opts2;
@@ -11610,41 +11567,41 @@ var require_dns = __commonJS({
       }
     };
     module2.exports = (interceptorOpts) => {
-      if ((interceptorOpts == null ? void 0 : interceptorOpts.maxTTL) != null && (typeof (interceptorOpts == null ? void 0 : interceptorOpts.maxTTL) !== "number" || (interceptorOpts == null ? void 0 : interceptorOpts.maxTTL) < 0)) {
+      if (interceptorOpts?.maxTTL != null && (typeof interceptorOpts?.maxTTL !== "number" || interceptorOpts?.maxTTL < 0)) {
         throw new InvalidArgumentError("Invalid maxTTL. Must be a positive number");
       }
-      if ((interceptorOpts == null ? void 0 : interceptorOpts.maxItems) != null && (typeof (interceptorOpts == null ? void 0 : interceptorOpts.maxItems) !== "number" || (interceptorOpts == null ? void 0 : interceptorOpts.maxItems) < 1)) {
+      if (interceptorOpts?.maxItems != null && (typeof interceptorOpts?.maxItems !== "number" || interceptorOpts?.maxItems < 1)) {
         throw new InvalidArgumentError(
           "Invalid maxItems. Must be a positive number and greater than zero"
         );
       }
-      if ((interceptorOpts == null ? void 0 : interceptorOpts.affinity) != null && (interceptorOpts == null ? void 0 : interceptorOpts.affinity) !== 4 && (interceptorOpts == null ? void 0 : interceptorOpts.affinity) !== 6) {
+      if (interceptorOpts?.affinity != null && interceptorOpts?.affinity !== 4 && interceptorOpts?.affinity !== 6) {
         throw new InvalidArgumentError("Invalid affinity. Must be either 4 or 6");
       }
-      if ((interceptorOpts == null ? void 0 : interceptorOpts.dualStack) != null && typeof (interceptorOpts == null ? void 0 : interceptorOpts.dualStack) !== "boolean") {
+      if (interceptorOpts?.dualStack != null && typeof interceptorOpts?.dualStack !== "boolean") {
         throw new InvalidArgumentError("Invalid dualStack. Must be a boolean");
       }
-      if ((interceptorOpts == null ? void 0 : interceptorOpts.lookup) != null && typeof (interceptorOpts == null ? void 0 : interceptorOpts.lookup) !== "function") {
+      if (interceptorOpts?.lookup != null && typeof interceptorOpts?.lookup !== "function") {
         throw new InvalidArgumentError("Invalid lookup. Must be a function");
       }
-      if ((interceptorOpts == null ? void 0 : interceptorOpts.pick) != null && typeof (interceptorOpts == null ? void 0 : interceptorOpts.pick) !== "function") {
+      if (interceptorOpts?.pick != null && typeof interceptorOpts?.pick !== "function") {
         throw new InvalidArgumentError("Invalid pick. Must be a function");
       }
-      const dualStack = (interceptorOpts == null ? void 0 : interceptorOpts.dualStack) ?? true;
+      const dualStack = interceptorOpts?.dualStack ?? true;
       let affinity;
       if (dualStack) {
-        affinity = (interceptorOpts == null ? void 0 : interceptorOpts.affinity) ?? null;
+        affinity = interceptorOpts?.affinity ?? null;
       } else {
-        affinity = (interceptorOpts == null ? void 0 : interceptorOpts.affinity) ?? 4;
+        affinity = interceptorOpts?.affinity ?? 4;
       }
       const opts = {
-        maxTTL: (interceptorOpts == null ? void 0 : interceptorOpts.maxTTL) ?? 1e4,
+        maxTTL: interceptorOpts?.maxTTL ?? 1e4,
         // Expressed in ms
-        lookup: (interceptorOpts == null ? void 0 : interceptorOpts.lookup) ?? null,
-        pick: (interceptorOpts == null ? void 0 : interceptorOpts.pick) ?? null,
+        lookup: interceptorOpts?.lookup ?? null,
+        pick: interceptorOpts?.pick ?? null,
         dualStack,
         affinity,
-        maxItems: (interceptorOpts == null ? void 0 : interceptorOpts.maxItems) ?? Infinity
+        maxItems: interceptorOpts?.maxItems ?? Infinity
       };
       const instance = new DNSInstance(opts);
       return (dispatch) => {
@@ -11837,8 +11794,7 @@ var require_headers = __commonJS({
        * @returns {string | null}
        */
       get(name, isLowerCase) {
-        var _a;
-        return ((_a = this[kHeadersMap].get(isLowerCase ? name : name.toLowerCase())) == null ? void 0 : _a.value) ?? null;
+        return this[kHeadersMap].get(isLowerCase ? name : name.toLowerCase())?.value ?? null;
       }
       *[Symbol.iterator]() {
         for (const { 0: name, 1: { value } } of this[kHeadersMap]) {
@@ -12267,7 +12223,6 @@ var require_response = __commonJS({
       }
       // Returns a clone of response.
       clone() {
-        var _a;
         webidl.brandCheck(this, _Response);
         if (bodyUnusable(this)) {
           throw webidl.errors.exception({
@@ -12276,7 +12231,7 @@ var require_response = __commonJS({
           });
         }
         const clonedResponse = cloneResponse(this[kState]);
-        if (hasFinalizationRegistry && ((_a = this[kState].body) == null ? void 0 : _a.stream)) {
+        if (hasFinalizationRegistry && this[kState].body?.stream) {
           streamRegistry.register(this, new WeakRef(this[kState].body.stream));
         }
         return fromInnerResponse(clonedResponse, getHeadersGuard(this[kHeaders]));
@@ -12347,8 +12302,8 @@ var require_response = __commonJS({
         cacheState: "",
         statusText: "",
         ...init,
-        headersList: (init == null ? void 0 : init.headersList) ? new HeadersList(init == null ? void 0 : init.headersList) : new HeadersList(),
-        urlList: (init == null ? void 0 : init.urlList) ? [...init.urlList] : []
+        headersList: init?.headersList ? new HeadersList(init?.headersList) : new HeadersList(),
+        urlList: init?.urlList ? [...init.urlList] : []
       };
     }
     function makeNetworkError(reason) {
@@ -12450,13 +12405,12 @@ var require_response = __commonJS({
       }
     }
     function fromInnerResponse(innerResponse, guard) {
-      var _a;
       const response = new Response(kConstruct);
       response[kState] = innerResponse;
       response[kHeaders] = new Headers2(kConstruct);
       setHeadersList(response[kHeaders], innerResponse.headersList);
       setHeadersGuard(response[kHeaders], guard);
-      if (hasFinalizationRegistry && ((_a = innerResponse.body) == null ? void 0 : _a.stream)) {
+      if (hasFinalizationRegistry && innerResponse.body?.stream) {
         streamRegistry.register(response, new WeakRef(innerResponse.body.stream));
       }
       return response;
@@ -12492,7 +12446,7 @@ var require_response = __commonJS({
       if (V instanceof ReadableStream) {
         return webidl.converters.ReadableStream(V, prefix, argument);
       }
-      if (V == null ? void 0 : V[Symbol.asyncIterator]) {
+      if (V?.[Symbol.asyncIterator]) {
         return V;
       }
       return webidl.converters.XMLHttpRequestBodyInit(V, prefix, argument);
@@ -12632,7 +12586,6 @@ var require_request2 = __commonJS({
     var Request = class _Request {
       // https://fetch.spec.whatwg.org/#dom-request
       constructor(input, init = {}) {
-        var _a, _b;
         webidl.util.markAsUncloneable(this);
         if (input === kConstruct) {
           return;
@@ -12668,7 +12621,7 @@ var require_request2 = __commonJS({
         }
         const origin = environmentSettingsObject.settingsObject.origin;
         let window2 = "client";
-        if (((_b = (_a = request2.window) == null ? void 0 : _a.constructor) == null ? void 0 : _b.name) === "EnvironmentSettingsObject" && sameOrigin(request2.window, origin)) {
+        if (request2.window?.constructor?.name === "EnvironmentSettingsObject" && sameOrigin(request2.window, origin)) {
           window2 = request2.window;
         }
         if (init.window != null) {
@@ -13342,17 +13295,15 @@ var require_fetch = __commonJS({
         this.state = "ongoing";
       }
       terminate(reason) {
-        var _a;
         if (this.state !== "ongoing") {
           return;
         }
         this.state = "terminated";
-        (_a = this.connection) == null ? void 0 : _a.destroy(reason);
+        this.connection?.destroy(reason);
         this.emit("terminated", reason);
       }
       // https://fetch.spec.whatwg.org/#fetch-controller-abort
       abort(error3) {
-        var _a;
         if (this.state !== "ongoing") {
           return;
         }
@@ -13361,7 +13312,7 @@ var require_fetch = __commonJS({
           error3 = new DOMException("The operation was aborted.", "AbortError");
         }
         this.serializedAbortReason = error3;
-        (_a = this.connection) == null ? void 0 : _a.destroy(error3);
+        this.connection?.destroy(error3);
         this.emit("terminated", error3);
       }
     };
@@ -13369,7 +13320,6 @@ var require_fetch = __commonJS({
       finalizeAndReportTiming(response, "fetch");
     }
     function fetch(input, init = void 0) {
-      var _a;
       webidl.argumentLengthCheck(arguments, 1, "globalThis.fetch");
       let p = createDeferredPromise();
       let requestObject;
@@ -13385,7 +13335,7 @@ var require_fetch = __commonJS({
         return p.promise;
       }
       const globalObject = request2.client.globalObject;
-      if (((_a = globalObject == null ? void 0 : globalObject.constructor) == null ? void 0 : _a.name) === "ServiceWorkerGlobalScope") {
+      if (globalObject?.constructor?.name === "ServiceWorkerGlobalScope") {
         request2.serviceWorkers = "none";
       }
       let responseObject = null;
@@ -13397,7 +13347,7 @@ var require_fetch = __commonJS({
           locallyAborted = true;
           assert(controller != null);
           controller.abort(requestObject.signal.reason);
-          const realResponse = responseObject == null ? void 0 : responseObject.deref();
+          const realResponse = responseObject?.deref();
           abortFetch(p, request2, realResponse, requestObject.signal.reason);
         }
       );
@@ -13427,11 +13377,10 @@ var require_fetch = __commonJS({
       return p.promise;
     }
     function finalizeAndReportTiming(response, initiatorType = "other") {
-      var _a;
       if (response.type === "error" && response.aborted) {
         return;
       }
-      if (!((_a = response.urlList) == null ? void 0 : _a.length)) {
+      if (!response.urlList?.length) {
         return;
       }
       const originalURL = response.urlList[0];
@@ -13461,11 +13410,10 @@ var require_fetch = __commonJS({
     }
     var markResourceTiming = performance.markResourceTiming;
     function abortFetch(p, request2, responseObject, error3) {
-      var _a, _b;
       if (p) {
         p.reject(error3);
       }
-      if (request2.body != null && isReadable((_a = request2.body) == null ? void 0 : _a.stream)) {
+      if (request2.body != null && isReadable(request2.body?.stream)) {
         request2.body.stream.cancel(error3).catch((err) => {
           if (err.code === "ERR_INVALID_STATE") {
             return;
@@ -13477,7 +13425,7 @@ var require_fetch = __commonJS({
         return;
       }
       const response = responseObject[kState];
-      if (response.body != null && isReadable((_b = response.body) == null ? void 0 : _b.stream)) {
+      if (response.body != null && isReadable(response.body?.stream)) {
         response.body.stream.cancel(error3).catch((err) => {
           if (err.code === "ERR_INVALID_STATE") {
             return;
@@ -13497,7 +13445,6 @@ var require_fetch = __commonJS({
       dispatcher = getGlobalDispatcher()
       // undici
     }) {
-      var _a, _b, _c;
       assert(dispatcher);
       let taskDestination = null;
       let crossOriginIsolatedCapability = false;
@@ -13523,7 +13470,7 @@ var require_fetch = __commonJS({
       };
       assert(!request2.body || request2.body.stream);
       if (request2.window === "client") {
-        request2.window = ((_c = (_b = (_a = request2.client) == null ? void 0 : _a.globalObject) == null ? void 0 : _b.constructor) == null ? void 0 : _c.name) === "Window" ? request2.client : "no-window";
+        request2.window = request2.client?.globalObject?.constructor?.name === "Window" ? request2.client : "no-window";
       }
       if (request2.origin === "client") {
         request2.origin = request2.client.origin;
@@ -14032,11 +13979,10 @@ var require_fetch = __commonJS({
         abort: null,
         destroyed: false,
         destroy(err, abort = true) {
-          var _a;
           if (!this.destroyed) {
             this.destroyed = true;
             if (abort) {
-              (_a = this.abort) == null ? void 0 : _a.call(this, err ?? new DOMException("The operation was aborted.", "AbortError"));
+              this.abort?.(err ?? new DOMException("The operation was aborted.", "AbortError"));
             }
           }
         }
@@ -14057,12 +14003,11 @@ var require_fetch = __commonJS({
         queueMicrotask(() => fetchParams.processRequestEndOfBody());
       } else if (request2.body != null) {
         const processBodyChunk = async function* (bytes) {
-          var _a;
           if (isCancelled(fetchParams)) {
             return;
           }
           yield bytes;
-          (_a = fetchParams.processRequestBodyChunkLength) == null ? void 0 : _a.call(fetchParams, bytes.byteLength);
+          fetchParams.processRequestBodyChunkLength?.(bytes.byteLength);
         };
         const processEndOfBody = () => {
           if (isCancelled(fetchParams)) {
@@ -14157,7 +14102,7 @@ var require_fetch = __commonJS({
             finalizeResponse(fetchParams, response);
             return;
           }
-          timingInfo.decodedBodySize += (bytes == null ? void 0 : bytes.byteLength) ?? 0;
+          timingInfo.decodedBodySize += bytes?.byteLength ?? 0;
           if (isFailure) {
             fetchParams.controller.terminate(bytes);
             return;
@@ -14303,11 +14248,10 @@ var require_fetch = __commonJS({
               this.body.push(null);
             },
             onError(error3) {
-              var _a;
               if (this.abort) {
                 fetchParams.controller.off("terminated", this.abort);
               }
-              (_a = this.body) == null ? void 0 : _a.destroy(error3);
+              this.body?.destroy(error3);
               fetchParams.controller.terminate(error3);
               reject(error3);
             },
@@ -15467,7 +15411,7 @@ var require_cache = __commonJS({
         }
         queueMicrotask(() => {
           if (errorData === null) {
-            cacheJobPromise.resolve(!!(requestResponses == null ? void 0 : requestResponses.length));
+            cacheJobPromise.resolve(!!requestResponses?.length);
           } else {
             cacheJobPromise.reject(errorData);
           }
@@ -15633,14 +15577,14 @@ var require_cache = __commonJS({
       #requestMatchesCachedItem(requestQuery, request2, response = null, options) {
         const queryURL = new URL(requestQuery.url);
         const cachedURL = new URL(request2.url);
-        if (options == null ? void 0 : options.ignoreSearch) {
+        if (options?.ignoreSearch) {
           cachedURL.search = "";
           queryURL.search = "";
         }
         if (!urlEquals(queryURL, cachedURL, true)) {
           return false;
         }
-        if (response == null || (options == null ? void 0 : options.ignoreVary) || !response.headersList.contains("vary")) {
+        if (response == null || options?.ignoreVary || !response.headersList.contains("vary")) {
           return true;
         }
         const fieldValues = getFieldValues(response.headersList.get("vary"));
@@ -16735,7 +16679,7 @@ var require_util7 = __commonJS({
     function failWebsocketConnection(ws, reason) {
       const { [kController]: controller, [kResponse]: response } = ws;
       controller.abort();
-      if ((response == null ? void 0 : response.socket) && !response.socket.destroyed) {
+      if (response?.socket && !response.socket.destroyed) {
         response.socket.destroy();
       }
       if (reason) {
@@ -16852,7 +16796,7 @@ var require_frame = __commonJS({
       createFrame(opcode) {
         const frameData = this.frameData;
         const maskKey = generateMask();
-        const bodyLength = (frameData == null ? void 0 : frameData.byteLength) ?? 0;
+        const bodyLength = frameData?.byteLength ?? 0;
         let payloadLength = bodyLength;
         let offset = 6;
         if (bodyLength > maxUnsigned16Bit) {
@@ -16945,7 +16889,6 @@ var require_connection = __commonJS({
         useParallelQueue: true,
         dispatcher: options.dispatcher,
         processResponse(response) {
-          var _a, _b;
           if (response.type === "error" || response.status !== 101) {
             failWebsocketConnection(ws, "Received network error or non-101 status code.");
             return;
@@ -16954,11 +16897,11 @@ var require_connection = __commonJS({
             failWebsocketConnection(ws, "Server did not respond with sent protocols.");
             return;
           }
-          if (((_a = response.headersList.get("Upgrade")) == null ? void 0 : _a.toLowerCase()) !== "websocket") {
+          if (response.headersList.get("Upgrade")?.toLowerCase() !== "websocket") {
             failWebsocketConnection(ws, 'Server did not set Upgrade header to "websocket".');
             return;
           }
-          if (((_b = response.headersList.get("Connection")) == null ? void 0 : _b.toLowerCase()) !== "upgrade") {
+          if (response.headersList.get("Connection")?.toLowerCase() !== "upgrade") {
             failWebsocketConnection(ws, 'Server did not set Connection header to "upgrade".');
             return;
           }
@@ -18367,7 +18310,7 @@ var require_eventsource = __commonJS({
             response.body.stream,
             eventSourceStream,
             (error3) => {
-              if ((error3 == null ? void 0 : error3.aborted) === false) {
+              if (error3?.aborted === false) {
                 this.close();
                 this.dispatchEvent(new Event("error"));
               }
@@ -25438,7 +25381,6 @@ function removeUndefinedProperties(obj) {
   return obj;
 }
 function merge(defaults, route, options) {
-  var _a;
   if (typeof route === "string") {
     let [method, url] = route.split(" ");
     options = Object.assign(url ? { method, url } : { url: method }, options);
@@ -25450,7 +25392,7 @@ function merge(defaults, route, options) {
   removeUndefinedProperties(options.headers);
   const mergedOptions = mergeDeep(defaults || {}, options);
   if (options.url === "/graphql") {
-    if (defaults && ((_a = defaults.mediaType.previews) == null ? void 0 : _a.length)) {
+    if (defaults && defaults.mediaType.previews?.length) {
       mergedOptions.mediaType.previews = defaults.mediaType.previews.filter(
         (preview) => !mergedOptions.mediaType.previews.includes(preview)
       ).concat(mergedOptions.mediaType.previews);
@@ -25623,7 +25565,6 @@ function expand(template, context) {
   }
 }
 function parse(options) {
-  var _a;
   let method = options.method.toUpperCase();
   let url = (options.url || "/").replace(/:([a-z]\w+)/g, "{$1}");
   let headers = Object.assign({}, options.headers);
@@ -25654,7 +25595,7 @@ function parse(options) {
       ).join(",");
     }
     if (url.endsWith("/graphql")) {
-      if ((_a = options.mediaType.previews) == null ? void 0 : _a.length) {
+      if (options.mediaType.previews?.length) {
         const previewsFromAcceptHeader = headers.accept.match(/(?<![\w-])[\w-]+(?=-preview)/g) || [];
         headers.accept = previewsFromAcceptHeader.concat(options.mediaType.previews).map((preview) => {
           const format = options.mediaType.format ? `.${options.mediaType.format}` : "+json";
@@ -25759,15 +25700,14 @@ function isPlainObject2(value) {
   return typeof Ctor === "function" && Ctor instanceof Ctor && Function.prototype.call(Ctor) === Function.prototype.call(value);
 }
 async function fetchWrapper(requestOptions) {
-  var _a, _b, _c, _d, _e;
-  const fetch = ((_a = requestOptions.request) == null ? void 0 : _a.fetch) || globalThis.fetch;
+  const fetch = requestOptions.request?.fetch || globalThis.fetch;
   if (!fetch) {
     throw new Error(
       "fetch is not set. Please pass a fetch implementation as new Octokit({ request: { fetch }}). Learn more at https://github.com/octokit/octokit.js/#fetch-missing"
     );
   }
-  const log = ((_b = requestOptions.request) == null ? void 0 : _b.log) || console;
-  const parseSuccessResponseBody = ((_c = requestOptions.request) == null ? void 0 : _c.parseSuccessResponseBody) !== false;
+  const log = requestOptions.request?.log || console;
+  const parseSuccessResponseBody = requestOptions.request?.parseSuccessResponseBody !== false;
   const body = isPlainObject2(requestOptions.body) || Array.isArray(requestOptions.body) ? JSON.stringify(requestOptions.body) : requestOptions.body;
   const requestHeaders = Object.fromEntries(
     Object.entries(requestOptions.headers).map(([name, value]) => [
@@ -25780,9 +25720,9 @@ async function fetchWrapper(requestOptions) {
     fetchResponse = await fetch(requestOptions.url, {
       method: requestOptions.method,
       body,
-      redirect: (_d = requestOptions.request) == null ? void 0 : _d.redirect,
+      redirect: requestOptions.request?.redirect,
       headers: requestHeaders,
-      signal: (_e = requestOptions.request) == null ? void 0 : _e.signal,
+      signal: requestOptions.request?.signal,
       // duplex must be set if request.body is ReadableStream or Async Iterables.
       // See https://fetch.spec.whatwg.org/#dom-requestinit-duplex.
       ...requestOptions.body && { duplex: "half" }
@@ -25858,7 +25798,6 @@ async function fetchWrapper(requestOptions) {
   return octokitResponse;
 }
 async function getResponseData(response) {
-  var _a;
   const contentType = response.headers.get("content-type");
   if (!contentType) {
     return response.text().catch(() => "");
@@ -25872,7 +25811,7 @@ async function getResponseData(response) {
     } catch (err) {
       return text;
     }
-  } else if (mimetype.type.startsWith("text/") || ((_a = mimetype.parameters.charset) == null ? void 0 : _a.toLowerCase()) === "utf-8") {
+  } else if (mimetype.type.startsWith("text/") || mimetype.parameters.charset?.toLowerCase() === "utf-8") {
     return response.text().catch(() => "");
   } else {
     return response.arrayBuffer().catch(() => new ArrayBuffer(0));
@@ -26225,8 +26164,7 @@ function requestLog(octokit) {
       );
       return response;
     }).catch((error3) => {
-      var _a;
-      const requestId = ((_a = error3.response) == null ? void 0 : _a.headers["x-github-request-id"]) || "UNKNOWN";
+      const requestId = error3.response?.headers["x-github-request-id"] || "UNKNOWN";
       octokit.log.error(
         `${requestOptions.method} ${path3} - ${error3.status} with id ${requestId} in ${Date.now() - start}ms`
       );
@@ -28804,7 +28742,7 @@ function isRequestError(error3) {
   return error3.request !== void 0;
 }
 async function errorRequest(state, octokit, error3, options) {
-  if (!isRequestError(error3) || !(error3 == null ? void 0 : error3.request.request)) {
+  if (!isRequestError(error3) || !error3?.request.request) {
     throw error3;
   }
   if (error3.status >= 400 && !state.doNotRetry.includes(error3.status)) {
@@ -28817,9 +28755,8 @@ async function errorRequest(state, octokit, error3, options) {
 async function wrapRequest(state, octokit, request2, options) {
   const limiter = new import_light.default();
   limiter.on("failed", function(error3, info2) {
-    var _a, _b;
-    const maxRetries = ~~((_a = error3.request.request) == null ? void 0 : _a.retries);
-    const after = ~~((_b = error3.request.request) == null ? void 0 : _b.retryAfter);
+    const maxRetries = ~~error3.request.request?.retries;
+    const after = ~~error3.request.request?.retryAfter;
     options.request.retryCount = info2.retryCount + 1;
     if (maxRetries > info2.retryCount) {
       return after * state.retryAfterBaseValue;
@@ -29043,7 +28980,6 @@ function throttling(octokit, octokitOptions) {
     request2.retryCount = retryCount;
     options.request.retryCount = retryCount;
     const { wantRetry, retryAfter = 0 } = await (async function() {
-      var _a;
       if (/\bsecondary rate\b/i.test(error3.message)) {
         const retryAfter2 = Number(error3.response.headers["retry-after"]) || state2.fallbackSecondaryRateRetryAfter;
         const wantRetry2 = await emitter.trigger(
@@ -29055,7 +28991,7 @@ function throttling(octokit, octokitOptions) {
         );
         return { wantRetry: wantRetry2, retryAfter: retryAfter2 };
       }
-      if (error3.response.headers != null && error3.response.headers["x-ratelimit-remaining"] === "0" || (((_a = error3.response.data) == null ? void 0 : _a.errors) ?? []).some(
+      if (error3.response.headers != null && error3.response.headers["x-ratelimit-remaining"] === "0" || (error3.response.data?.errors ?? []).some(
         (error22) => error22.type === "RATE_LIMITED"
       )) {
         const rateLimitReset = new Date(
