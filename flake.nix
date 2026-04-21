@@ -6,7 +6,6 @@
     flake-utils.url = "github:numtide/flake-utils";
     pre-commit-hooks = {
       url = "github:cachix/pre-commit-hooks.nix";
-      inputs.flake-utils.follows = "flake-utils";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
@@ -33,7 +32,7 @@
       in {
         devShells.default = pkgs.mkShell {
           buildInputs = [
-            pkgs.nodejs_20
+            pkgs.nodejs_24
           ];
           inherit (checks.pre-commit-check) shellHook;
         };
