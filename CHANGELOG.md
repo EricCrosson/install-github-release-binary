@@ -1,3 +1,10 @@
+## [2.5.17](https://github.com/EricCrosson/install-github-release-binary/compare/v2.5.16...v2.5.17) (2026-04-21)
+
+
+### Bug Fixes
+
+* migrate action runtime to node24 ([9038db3](https://github.com/EricCrosson/install-github-release-binary/commit/9038db3190f300fb63ccddcf79191fd28715be5b))
+
 ## [2.5.16](https://github.com/EricCrosson/install-github-release-binary/compare/v2.5.15...v2.5.16) (2026-04-21)
 
 
