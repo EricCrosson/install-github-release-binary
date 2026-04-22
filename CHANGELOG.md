@@ -1,3 +1,10 @@
+## [2.5.20](https://github.com/EricCrosson/install-github-release-binary/compare/v2.5.19...v2.5.20) (2026-04-22)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @actions/core to v3.0.1 ([7995e3c](https://github.com/EricCrosson/install-github-release-binary/commit/7995e3cb5c7e0ad2525d6e54b76d659a42613da4))
+
 ## [2.5.19](https://github.com/EricCrosson/install-github-release-binary/compare/v2.5.18...v2.5.19) (2026-04-21)
 
 
