@@ -22,9 +22,9 @@
   "dependencies": {
     "@actions/core": "3.0.1",
     "@actions/tool-cache": "4.0.0",
-    "@octokit/plugin-throttling": "11.0.3",
+    "@octokit/plugin-throttling": "11.0.5",
     "@octokit/rest": "22.0.1",
-    "@octokit/plugin-retry": "8.1.0",
+    "@octokit/plugin-retry": "8.1.1",
     "esbuild": "0.28.1"
   },
   "devDependencies": {
